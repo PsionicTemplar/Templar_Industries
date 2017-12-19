@@ -18,7 +18,6 @@ public class Start extends JavaPlugin{
 	
 	public void onEnable(){
 		plugin = this;
-		System.out.println("[Templar Industries] Starting Up!");
 		
 		try{
 			
@@ -32,7 +31,6 @@ public class Start extends JavaPlugin{
 	}
 	
 	public void onDisable(){
-		System.out.println("[Templar Industries] Shutting Down!");
 		
 		try{
 			
