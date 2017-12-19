@@ -1,8 +1,5 @@
 package me.PsionicTemplar.templarIndustries;
 
-import java.util.Arrays;
-import java.util.HashMap;
-
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
