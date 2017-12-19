@@ -153,9 +153,10 @@ public abstract class TemplarBlock implements Listener {
 
 			@Override
 			public void run() {
-				l.getWorld().dropItemNaturally(l, getBlockItem());
+				Location loc = new Location(l.getWorld(), l.getBlockX() + 0.5, l.getBlockY(), l.getBlockZ() + 0.5);
+				loc.getWorld().dropItemNaturally(loc, getBlockItem());
 				for (int i : loadedBlocks.get(tempId).getItemMap().keySet()) {
-					l.getWorld().dropItemNaturally(l, loadedBlocks.get(tempId).getItemMap().get(i));
+					loc.getWorld().dropItemNaturally(loc, loadedBlocks.get(tempId).getItemMap().get(i));
 				}
 				loadedBlocks.remove(tempId);
 				locations.remove(l);
