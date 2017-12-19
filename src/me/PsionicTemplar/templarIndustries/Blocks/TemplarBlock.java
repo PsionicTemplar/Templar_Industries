@@ -52,7 +52,7 @@ public abstract class TemplarBlock implements Listener {
 		FileConfiguration config = co.getConfig();
 		this.id = config.getInt("id");
 		for (int i = 0; i < this.id; i++) {
-			if (!config.contains(this.id + "")) {
+			if (!config.contains(i + "")) {
 				continue;
 			}
 			Location l = new Location(Bukkit.getWorld(config.getString(i + ".world")), config.getInt(i + ".x"),
@@ -80,15 +80,22 @@ public abstract class TemplarBlock implements Listener {
 		co.setConfigWrite(config);
 	}
 
-	protected void removeIdFromOpen(int i) {
+	protected void removeIdFromOpen() {
 		try {
-			this.openIdSlots.remove(i);
+			this.openIdSlots.remove(0);
 			FileConfiguration config = co.getConfig();
 			config.set("open", this.openIdSlots);
 			co.setConfigWrite(config);
 		} catch (Exception ex) {
 			return;
 		}
+	}
+	
+	protected void addIdToOpen(int i){
+		this.openIdSlots.add(i);
+		FileConfiguration config = co.getConfig();
+		config.set("open", this.openIdSlots);
+		co.setConfigWrite(config);
 	}
 
 	@EventHandler
@@ -102,7 +109,7 @@ public abstract class TemplarBlock implements Listener {
 		int tempId = 0;
 		if (!this.openIdSlots.isEmpty()) {
 			tempId = this.openIdSlots.get(0);
-			removeIdFromOpen(tempId);
+			removeIdFromOpen();
 		} else {
 			tempId = this.id;
 			increaseId();
@@ -128,6 +135,7 @@ public abstract class TemplarBlock implements Listener {
 			return;
 		}
 		int tempId = locations.get(l);
+		addIdToOpen(tempId);
 		FileConfiguration config = co.getConfig();
 		config.set(tempId + "", null);
 		co.setConfigWrite(config);
