@@ -1,5 +1,8 @@
 package me.PsionicTemplar.templarIndustries;
 
+import java.util.Arrays;
+import java.util.HashMap;
+
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,6 +17,7 @@ public class Start extends JavaPlugin{
 	}
 	
 	public void onEnable(){
+		plugin = this;
 		System.out.println("[Templar Industries] Starting Up!");
 		
 		try{

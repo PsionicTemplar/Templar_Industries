@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.lang.reflect.Type;
 import java.util.HashMap;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -25,7 +24,7 @@ public class ConfigObject {
 		this.config = config;
 	}
 
-	public ConfigObject(String path, String fileName, HashMap<String, Type> defaults) {
+	public ConfigObject(String path, String fileName, HashMap<String, Object> defaults) {
 		this.mainConfig = false;
 		this.filePath = path;
 		this.fileName = fileName;
