@@ -63,5 +63,14 @@ public class ConfigObject {
 			}
 		}
 	}
+	
+	public FileConfiguration getConfig(){
+		return this.config;
+	}
+	
+	public void setConfigWrite(FileConfiguration config){
+		this.config = config;
+		write();
+	}
 
 }
