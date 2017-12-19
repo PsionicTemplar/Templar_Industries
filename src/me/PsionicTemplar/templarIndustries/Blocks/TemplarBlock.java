@@ -10,10 +10,15 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -26,9 +31,14 @@ public abstract class TemplarBlock implements Listener {
 	protected List<Integer> openIdSlots;
 	protected HashMap<Location, Integer> locations = new HashMap<Location, Integer>();
 	protected HashMap<Integer, TemplarBlockObject> loadedBlocks = new HashMap<Integer, TemplarBlockObject>();
+	protected HashMap<UUID, Location> inGui = new HashMap<UUID, Location>();
 	protected ConfigObject co;
+	protected String name;
+	protected int inventorySize;
 
-	public TemplarBlock(String name) {
+	public TemplarBlock(String name, int inventorySize) {
+		this.name = name;
+		this.inventorySize = inventorySize;
 		HashMap<String, Object> defaults = new HashMap<String, Object>();
 		defaults.put("id", 0);
 		defaults.put("open", new ArrayList<Integer>());
@@ -158,5 +168,25 @@ public abstract class TemplarBlock implements Listener {
 		return i;
 	}
 	
-	protected abstract void openGui();
+	@EventHandler
+	public void onBlockInteract(PlayerInteractEvent e){
+		if(e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getPlayer().isSneaking()){
+			return;
+		}
+		openGui(e.getClickedBlock().getLocation(), e.getPlayer());
+		inGui.put(e.getPlayer().getUniqueId(), e.getClickedBlock().getLocation());
+	}
+	
+	@EventHandler
+	public void onInventoryClose(InventoryCloseEvent e){
+		if(!inGui.containsKey(e.getPlayer().getUniqueId())){
+			return;
+		}
+		closeInventory(e.getInventory(), Bukkit.getPlayer(e.getPlayer().getUniqueId()));
+		inGui.remove(e.getPlayer().getUniqueId());
+	}
+	
+	protected abstract void closeInventory(Inventory i, Player p);
+	
+	protected abstract void openGui(Location l, Player p);
 }

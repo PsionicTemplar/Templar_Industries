@@ -1,7 +1,10 @@
 package me.PsionicTemplar.templarIndustries;
 
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Test;
 
 
 
@@ -19,6 +22,8 @@ public class Start extends JavaPlugin{
 		
 		try{
 			this.getCommand("test").setExecutor(new CommandExtender());
+			
+			getServer().getPluginManager().registerEvents((Listener) new Test("Test Block"), this);
 		}catch(Exception ex){
 			System.out.println("[Templar Industries] There was an error with the startup. Please report this:");
 			System.out.println("[Templar Industries] --------------------------------------------------------");

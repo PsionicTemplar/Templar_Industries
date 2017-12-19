@@ -73,4 +73,16 @@ public class ConfigObject {
 		write();
 	}
 
+	public boolean isMainConfig() {
+		return mainConfig;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
 }
