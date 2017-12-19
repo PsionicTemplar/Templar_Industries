@@ -157,4 +157,6 @@ public abstract class TemplarBlock implements Listener {
 		}
 		return i;
 	}
+	
+	protected abstract void openGui();
 }
