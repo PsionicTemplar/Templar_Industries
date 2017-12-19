@@ -93,7 +93,7 @@ public abstract class TemplarBlock implements Listener {
 
 	@EventHandler
 	public void addBlock(BlockPlaceEvent e) {
-		if(!e.getItemInHand().equals(ItemStackCopy.getItemStackCopy(getBlockItem(), e.getItemInHand().getAmount()))){
+		if (!e.getItemInHand().equals(ItemStackCopy.getItemStackCopy(getBlockItem(), e.getItemInHand().getAmount()))) {
 			return;
 		}
 		FileConfiguration config = co.getConfig();
@@ -117,6 +117,8 @@ public abstract class TemplarBlock implements Listener {
 
 		co.setConfigWrite(config);
 		locations.put(l, tempId);
+		loadedBlocks.put(tempId, new TemplarBlockObject(this, tempId, l, owner, new ArrayList<UUID>(),
+				new HashMap<Integer, ItemStack>()));
 	}
 
 	@EventHandler
@@ -167,30 +169,30 @@ public abstract class TemplarBlock implements Listener {
 		}
 		return i;
 	}
-	
+
 	@EventHandler
-	public void onBlockInteract(PlayerInteractEvent e){
-		if(e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getPlayer().isSneaking()){
+	public void onBlockInteract(PlayerInteractEvent e) {
+		if (e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getPlayer().isSneaking()) {
 			return;
 		}
-		if(!this.locations.containsKey(e.getClickedBlock().getLocation())){
+		if (!this.locations.containsKey(e.getClickedBlock().getLocation())) {
 			return;
 		}
 		e.setCancelled(true);
 		openGui(e.getClickedBlock().getLocation(), e.getPlayer());
 		inGui.put(e.getPlayer().getUniqueId(), e.getClickedBlock().getLocation());
 	}
-	
+
 	@EventHandler
-	public void onInventoryClose(InventoryCloseEvent e){
-		if(!inGui.containsKey(e.getPlayer().getUniqueId())){
+	public void onInventoryClose(InventoryCloseEvent e) {
+		if (!inGui.containsKey(e.getPlayer().getUniqueId())) {
 			return;
 		}
 		closeInventory(e.getInventory(), Bukkit.getPlayer(e.getPlayer().getUniqueId()));
 		inGui.remove(e.getPlayer().getUniqueId());
 	}
-	
+
 	protected abstract void closeInventory(Inventory i, Player p);
-	
+
 	protected abstract void openGui(Location l, Player p);
 }
