@@ -28,7 +28,7 @@ import me.PsionicTemplar.templarIndustries.Util.ItemStackCopy;
 
 public abstract class TemplarBlock implements Listener {
 	protected int id;
-	protected List<Integer> openIdSlots;
+	protected List<Integer> openIdSlots = new ArrayList<Integer>();
 	protected HashMap<Location, Integer> locations = new HashMap<Location, Integer>();
 	protected HashMap<Integer, TemplarBlockObject> loadedBlocks = new HashMap<Integer, TemplarBlockObject>();
 	protected HashMap<UUID, Location> inGui = new HashMap<UUID, Location>();
