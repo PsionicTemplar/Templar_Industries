@@ -1,5 +1,34 @@
 package me.PsionicTemplar.templarIndustries;
 
-public class Start {
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class Start extends JavaPlugin{
+	
+	public void onEnable(){
+		System.out.println("[Templar Industries] Starting Up!");
+		
+		try{
+			
+		}catch(Exception ex){
+			System.out.println("[Templar Industries] There was an error with the startup. Please report this:");
+			System.out.println("[Templar Industries] --------------------------------------------------------");
+			ex.printStackTrace();
+			System.out.println("[Templar Industries] --------------------------------------------------------");
+			this.setEnabled(false);
+		}
+	}
+	
+	public void onDisable(){
+		System.out.println("[Templar Industries] Shutting Down!");
+		
+		try{
+			
+		}catch(Exception ex){
+			System.out.println("[Templar Industries] There was an error with the shutdown. Please report this:");
+			System.out.println("[Templar Industries] --------------------------------------------------------");
+			ex.printStackTrace();
+			System.out.println("[Templar Industries] --------------------------------------------------------");
+		}
+	}
 
 }
