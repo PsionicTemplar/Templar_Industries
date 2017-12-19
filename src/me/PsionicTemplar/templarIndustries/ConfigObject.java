@@ -10,6 +10,7 @@ import java.util.HashMap;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+
 public class ConfigObject {
 
 	private boolean mainConfig;
@@ -32,6 +33,10 @@ public class ConfigObject {
 			file = new File(this.filePath, this.fileName);
 			if (!Start.getPlugin().getDataFolder().exists()) {
 				Start.getPlugin().getDataFolder().mkdirs();
+			}
+			File baseFolder = new File(path);
+			if(!baseFolder.exists()){
+				baseFolder.mkdirs();
 			}
 			if (!file.exists()) {
 				file.createNewFile();
