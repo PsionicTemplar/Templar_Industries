@@ -176,6 +176,7 @@ public abstract class TemplarBlock implements Listener {
 		if(!this.locations.containsKey(e.getClickedBlock().getLocation())){
 			return;
 		}
+		e.setCancelled(true);
 		openGui(e.getClickedBlock().getLocation(), e.getPlayer());
 		inGui.put(e.getPlayer().getUniqueId(), e.getClickedBlock().getLocation());
 	}
