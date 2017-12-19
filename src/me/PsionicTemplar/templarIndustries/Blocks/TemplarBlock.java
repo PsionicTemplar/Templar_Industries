@@ -16,9 +16,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -196,11 +196,21 @@ public abstract class TemplarBlock implements Listener {
 		if (!inGui.containsKey(e.getPlayer().getUniqueId())) {
 			return;
 		}
-		closeInventory(e.getInventory(), Bukkit.getPlayer(e.getPlayer().getUniqueId()));
+		closeInventory(e, Bukkit.getPlayer(e.getPlayer().getUniqueId()));
 		inGui.remove(e.getPlayer().getUniqueId());
 	}
 
-	protected abstract void closeInventory(Inventory i, Player p);
+	protected abstract void closeInventory(InventoryCloseEvent e, Player p);
 
 	protected abstract void openGui(Location l, Player p);
+	
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent e){
+		if(!this.inGui.containsKey(e.getWhoClicked())){
+			return;
+		}
+		inventoryClick(e, Bukkit.getPlayer(e.getWhoClicked().getUniqueId()));
+	}
+	
+	protected abstract void inventoryClick(InventoryClickEvent e, Player p);
 }
