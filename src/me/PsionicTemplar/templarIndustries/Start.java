@@ -1,8 +1,17 @@
 package me.PsionicTemplar.templarIndustries;
 
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+
 public class Start extends JavaPlugin{
+	
+	private static Start plugin; 
+	
+	public static Plugin getPlugin(){
+		JavaPlugin plugin = Start.plugin;
+		return plugin;
+	}
 	
 	public void onEnable(){
 		System.out.println("[Templar Industries] Starting Up!");
