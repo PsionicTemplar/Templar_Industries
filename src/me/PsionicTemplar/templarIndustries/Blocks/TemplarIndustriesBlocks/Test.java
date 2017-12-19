@@ -20,7 +20,7 @@ public class Test extends TemplarBlock{
 	}
 
 	@Override
-	protected ItemStack getItemStack() {
+	public ItemStack getItemStack() {
 		ItemStack i = new ItemStack(Material.STONE);
 		return i;
 	}

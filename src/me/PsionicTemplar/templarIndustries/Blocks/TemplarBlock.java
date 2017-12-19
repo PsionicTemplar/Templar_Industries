@@ -164,7 +164,7 @@ public abstract class TemplarBlock implements Listener {
 		}.runTaskLater(Start.getPlugin(), 5);
 	}
 
-	protected abstract ItemStack getItemStack();
+	public abstract ItemStack getItemStack();
 
 	public ItemStack getBlockItem() {
 		ItemStack copyThis = getItemStack();
