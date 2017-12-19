@@ -173,6 +173,9 @@ public abstract class TemplarBlock implements Listener {
 		if(e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getPlayer().isSneaking()){
 			return;
 		}
+		if(!this.locations.containsKey(e.getClickedBlock().getLocation())){
+			return;
+		}
 		openGui(e.getClickedBlock().getLocation(), e.getPlayer());
 		inGui.put(e.getPlayer().getUniqueId(), e.getClickedBlock().getLocation());
 	}
