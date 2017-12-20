@@ -63,6 +63,7 @@ public class Start extends JavaPlugin {
 				for (TemplarBlock tb : blocks.values()) {
 					tb.saveInventory(new InventoryCloseEvent(p.getOpenInventory()), p);
 				}
+				p.closeInventory();
 			}
 		} catch (Exception ex) {
 			System.out.println("[Templar Industries] There was an error with the shutdown. Please report this:");

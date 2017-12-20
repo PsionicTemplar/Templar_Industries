@@ -88,6 +88,7 @@ public class IndustrialWorkbench extends TemplarBlock {
 		p.openInventory(inv);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void inventoryClick(InventoryClickEvent e, Player p) {
 		if (e.getClickedInventory().getType() == InventoryType.PLAYER) {
@@ -188,6 +189,7 @@ public class IndustrialWorkbench extends TemplarBlock {
 					e.getWhoClicked().sendMessage(ChatStrings.getError() + "That is not a recipe!");
 					return;
 				} else {
+					try{
 					if (!matched.getResult().equals(ItemStackCopy.getItemStackCopy(
 							e.getClickedInventory().getItem(output), matched.getResult().getAmount()))) {
 						e.getWhoClicked().sendMessage(ChatStrings.getError() + "Please empty the output slot first...");
@@ -198,6 +200,8 @@ public class IndustrialWorkbench extends TemplarBlock {
 					if (resultAmount > e.getClickedInventory().getItem(output).getMaxStackSize()) {
 						e.getWhoClicked().sendMessage(ChatStrings.getError() + "Please empty the output slot first...");
 						return;
+					}
+					}catch(NullPointerException ex){
 					}
 					for (ItemStack i : matched.getItems()) {
 						for (int count = 0; count < 9; count++) {
@@ -226,30 +230,60 @@ public class IndustrialWorkbench extends TemplarBlock {
 					}
 				}
 			} else {
-				if (!matched.getResult().equals(ItemStackCopy.getItemStackCopy(e.getClickedInventory().getItem(output),
-						matched.getResult().getAmount()))) {
-					e.getWhoClicked().sendMessage(ChatStrings.getError() + "Please empty the output slot first...");
-					return;
-				}
-				int resultAmount = e.getClickedInventory().getItem(output).getAmount()
-						+ matched.getResult().getAmount();
-				if (resultAmount > e.getClickedInventory().getItem(output).getMaxStackSize()) {
-					e.getWhoClicked().sendMessage(ChatStrings.getError() + "Please empty the output slot first...");
-					return;
+				try {
+					if (!matched.getResult().equals(ItemStackCopy.getItemStackCopy(
+							e.getClickedInventory().getItem(output), matched.getResult().getAmount()))) {
+						e.getWhoClicked().sendMessage(ChatStrings.getError() + "Please empty the output slot first...");
+						return;
+					}
+					int resultAmount = e.getClickedInventory().getItem(output).getAmount()
+							+ matched.getResult().getAmount();
+					if (resultAmount > e.getClickedInventory().getItem(output).getMaxStackSize()) {
+						e.getWhoClicked().sendMessage(ChatStrings.getError() + "Please empty the output slot first...");
+						return;
+					}
+				} catch (NullPointerException ex) {
 				}
 				counter = 0;
 				for (ItemStack i : matched.getItems()) {
+					try{
 					e.getClickedInventory().getItem(workbench.get(counter)).setAmount(
 							e.getClickedInventory().getItem(workbench.get(counter)).getAmount() - i.getAmount());
+					}catch(NullPointerException ex){
+					}
 					counter++;
 				}
 			}
-			try{
-			e.getClickedInventory().setItem(output, ItemStackCopy.getItemStackCopy(matched.getResult(),
-					matched.getResult().getAmount() + e.getClickedInventory().getItem(output).getAmount()));
-			}catch(NullPointerException ex){
+			try {
 				e.getClickedInventory().setItem(output, ItemStackCopy.getItemStackCopy(matched.getResult(),
-						matched.getResult().getAmount()));
+						matched.getResult().getAmount() + e.getClickedInventory().getItem(output).getAmount()));
+			} catch (NullPointerException ex) {
+				e.getClickedInventory().setItem(output,
+						ItemStackCopy.getItemStackCopy(matched.getResult(), matched.getResult().getAmount()));
+			}
+		}
+		if (e.getSlot() == output) {
+			if (e.getCursor() == null) {
+				e.setCursor(ItemStackCopy.getItemStackCopy(e.getCurrentItem(), e.getCurrentItem().getAmount()));
+				e.getCurrentItem().setAmount(0);
+				return;
+			}
+			if(e.getCursor().getType() == Material.AIR){
+				e.setCursor(ItemStackCopy.getItemStackCopy(e.getCurrentItem(), e.getCurrentItem().getAmount()));
+				e.getCurrentItem().setAmount(0);
+				return;
+			}
+			if (!e.getCursor().equals(ItemStackCopy.getItemStackCopy(e.getCurrentItem(), e.getCursor().getAmount()))) {
+				return;
+			}
+			int finalAmount = e.getCursor().getAmount() + e.getCurrentItem().getAmount();
+			if (finalAmount > e.getCursor().getMaxStackSize()) {
+				int sub = e.getCursor().getMaxStackSize() - e.getCursor().getAmount();
+				e.getCurrentItem().setAmount(e.getCurrentItem().getAmount() - sub);
+				e.getCursor().setAmount(e.getCursor().getMaxStackSize());
+			} else {
+				e.getCurrentItem().setAmount(0);
+				e.getCursor().setAmount(finalAmount);
 			}
 		}
 	}
