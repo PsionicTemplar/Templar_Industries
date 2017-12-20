@@ -217,4 +217,5 @@ public abstract class TemplarBlock implements Listener {
 	}
 	
 	protected abstract void inventoryClick(InventoryClickEvent e, Player p);
+	public abstract void saveInventory(InventoryCloseEvent e, Player p);
 }
