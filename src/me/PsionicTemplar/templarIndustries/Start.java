@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarBlock;
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.IndustrialWorkbench;
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Test;
+import me.PsionicTemplar.templarIndustries.Recipes.TemplarIndustriesRecipes.TestRecipes;
 
 
 
@@ -37,6 +38,8 @@ public class Start extends JavaPlugin{
 			blocks.put("Test Block", new Test("Test Block"));
 			blocks.put("Industrial Workbench", new IndustrialWorkbench("Industrial Workbench"));
 			loadEvents();
+			
+			TestRecipes.load();
 		}catch(Exception ex){
 			System.out.println("[Templar Industries] There was an error with the startup. Please report this:");
 			System.out.println("[Templar Industries] --------------------------------------------------------");

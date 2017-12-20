@@ -207,7 +207,10 @@ public abstract class TemplarBlock implements Listener {
 	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e){
-		if(!this.inGui.containsKey(e.getWhoClicked())){
+		if(!this.inGui.containsKey(e.getWhoClicked().getUniqueId())){
+			return;
+		}
+		if(e.getClickedInventory() == null){
 			return;
 		}
 		inventoryClick(e, Bukkit.getPlayer(e.getWhoClicked().getUniqueId()));
