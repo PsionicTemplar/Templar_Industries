@@ -91,6 +91,7 @@ public class IndustrialWorkbench extends TemplarBlock {
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void inventoryClick(InventoryClickEvent e, Player p) {
+		int howManyCrafted = 0;
 		if (e.getClickedInventory().getType() == InventoryType.PLAYER) {
 			if (!e.isShiftClick()) {
 				return;
@@ -189,23 +190,57 @@ public class IndustrialWorkbench extends TemplarBlock {
 					e.getWhoClicked().sendMessage(ChatStrings.getError() + "That is not a recipe!");
 					return;
 				} else {
-					try{
-					if (!matched.getResult().equals(ItemStackCopy.getItemStackCopy(
-							e.getClickedInventory().getItem(output), matched.getResult().getAmount()))) {
-						e.getWhoClicked().sendMessage(ChatStrings.getError() + "Please empty the output slot first...");
-						return;
+					try {
+						if (!matched.getResult().equals(ItemStackCopy.getItemStackCopy(
+								e.getClickedInventory().getItem(output), matched.getResult().getAmount()))) {
+							e.getWhoClicked()
+									.sendMessage(ChatStrings.getError() + "Please empty the output slot first...");
+							return;
+						}
+						int resultAmount = e.getClickedInventory().getItem(output).getAmount()
+								+ matched.getResult().getAmount();
+						if (resultAmount > e.getClickedInventory().getItem(output).getMaxStackSize()) {
+							e.getWhoClicked()
+									.sendMessage(ChatStrings.getError() + "Please empty the output slot first...");
+							return;
+						}
+					} catch (NullPointerException ex) {
 					}
-					int resultAmount = e.getClickedInventory().getItem(output).getAmount()
-							+ matched.getResult().getAmount();
-					if (resultAmount > e.getClickedInventory().getItem(output).getMaxStackSize()) {
-						e.getWhoClicked().sendMessage(ChatStrings.getError() + "Please empty the output slot first...");
-						return;
+					int howManyCraftableTimes = 1;
+					if (e.isShiftClick()) {
+						if (e.getClickedInventory().getItem(output) == null) {
+							howManyCraftableTimes = (int) (matched.getResult().getMaxStackSize()
+									/ matched.getResult().getAmount());
+						} else {
+							howManyCraftableTimes = (int) ((e.getClickedInventory().getItem(output).getMaxStackSize()
+									- e.getClickedInventory().getItem(output).getAmount()
+											/ matched.getResult().getAmount()));
+						}
 					}
-					}catch(NullPointerException ex){
-					}
-					for (ItemStack i : matched.getItems()) {
-						for (int count = 0; count < 9; count++) {
-							try {
+					for (int temp = 0; temp < howManyCraftableTimes; temp++) {
+						ItemStack[] itemsInWorkbench = new ItemStack[9];
+						int tt = 0;
+						for (int in : workbench) {
+							if (e.getClickedInventory().getItem(in) == null) {
+								itemsInWorkbench[tt] = null;
+							} else {
+								itemsInWorkbench[tt] = ItemStackCopy.getItemStackCopy(
+										e.getClickedInventory().getItem(in),
+										e.getClickedInventory().getItem(in).getAmount());
+							}
+
+							tt++;
+						}
+						boolean doLoop = true;
+						for (ItemStack falseI : matched.getItems()) {
+							if (falseI == null) {
+								continue;
+							}
+							ItemStack i = ItemStackCopy.getItemStackCopy(falseI, falseI.getAmount());
+							for (int count = 0; count < 9; count++) {
+								if (e.getClickedInventory().getItem(workbench.get(count)) == null) {
+									continue;
+								}
 								if (!i.equals(ItemStackCopy.getItemStackCopy(
 										e.getClickedInventory().getItem(workbench.get(count)), i.getAmount()))) {
 									continue;
@@ -214,19 +249,33 @@ public class IndustrialWorkbench extends TemplarBlock {
 									e.getClickedInventory().getItem(workbench.get(count))
 											.setAmount(e.getClickedInventory().getItem(workbench.get(count)).getAmount()
 													- i.getAmount());
+									i = null;
+									break;
 								} else if (i.getAmount() == e.getClickedInventory().getItem(workbench.get(count))
 										.getAmount()) {
 									e.getClickedInventory().getItem(workbench.get(count)).setAmount(0);
+									i = null;
 									break;
 								} else {
 									i.setAmount(i.getAmount()
 											- e.getClickedInventory().getItem(workbench.get(count)).getAmount());
 									e.getClickedInventory().getItem(workbench.get(count)).setAmount(0);
 								}
-							} catch (Exception ex) {
-								continue;
+							}
+							if (i != null) {
+								doLoop = false;
+								break;
 							}
 						}
+						if (!doLoop) {
+							tt = 0;
+							for (ItemStack i : itemsInWorkbench) {
+								e.getClickedInventory().setItem(workbench.get(tt), i);
+								tt++;
+							}
+							break;
+						}
+						howManyCrafted++;
 					}
 				}
 			} else {
@@ -244,22 +293,67 @@ public class IndustrialWorkbench extends TemplarBlock {
 					}
 				} catch (NullPointerException ex) {
 				}
-				counter = 0;
-				for (ItemStack i : matched.getItems()) {
-					try{
-					e.getClickedInventory().getItem(workbench.get(counter)).setAmount(
-							e.getClickedInventory().getItem(workbench.get(counter)).getAmount() - i.getAmount());
-					}catch(NullPointerException ex){
+				int howManyCraftableTimes = 1;
+				if (e.isShiftClick()) {
+					if (e.getClickedInventory().getItem(output) == null) {
+						howManyCraftableTimes = (int) (matched.getResult().getMaxStackSize()
+								/ matched.getResult().getAmount());
+					} else {
+						howManyCraftableTimes = (int) ((e.getClickedInventory().getItem(output).getMaxStackSize()
+								- e.getClickedInventory().getItem(output).getAmount()
+										/ matched.getResult().getAmount()));
 					}
-					counter++;
 				}
+				for (int t = 0; t < howManyCraftableTimes; t++) {
+					ItemStack[] itemsInWorkbench = new ItemStack[9];
+					int tt = 0;
+					for (int in : workbench) {
+						if (e.getClickedInventory().getItem(in) == null) {
+							itemsInWorkbench[tt] = null;
+						} else {
+							itemsInWorkbench[tt] = ItemStackCopy.getItemStackCopy(
+									e.getClickedInventory().getItem(in),
+									e.getClickedInventory().getItem(in).getAmount());
+						}
+						tt++;
+					}
+					boolean doLoop = true;
+					counter = 0;
+					for (ItemStack i : matched.getItems()) {
+						if (i == null && e.getClickedInventory().getItem(workbench.get(counter)) == null) {
+							counter++;
+							continue;
+						}
+						try {
+							e.getClickedInventory().getItem(workbench.get(counter))
+									.setAmount(e.getClickedInventory().getItem(workbench.get(counter)).getAmount()
+											- i.getAmount());
+						} catch (NullPointerException ex) {
+							doLoop = false;
+							break;
+						}
+						counter++;
+					}
+					if (!doLoop) {
+						tt = 0;
+						for (ItemStack i : itemsInWorkbench) {
+							e.getClickedInventory().setItem(workbench.get(tt), i);
+							tt++;
+						}
+						break;
+					}
+					howManyCrafted++;
+				}
+
 			}
 			try {
-				e.getClickedInventory().setItem(output, ItemStackCopy.getItemStackCopy(matched.getResult(),
-						matched.getResult().getAmount() + e.getClickedInventory().getItem(output).getAmount()));
-			} catch (NullPointerException ex) {
 				e.getClickedInventory().setItem(output,
-						ItemStackCopy.getItemStackCopy(matched.getResult(), matched.getResult().getAmount()));
+						ItemStackCopy.getItemStackCopy(matched.getResult(),
+								(matched.getResult().getAmount() * howManyCrafted)
+										+ e.getClickedInventory().getItem(output).getAmount()));
+			} catch (NullPointerException ex) {
+				e.getClickedInventory().setItem(output, ItemStackCopy.getItemStackCopy(matched.getResult(),
+						(matched.getResult().getAmount() * howManyCrafted)));
 			}
 		}
 		if (e.getSlot() == output) {
@@ -268,7 +362,7 @@ public class IndustrialWorkbench extends TemplarBlock {
 				e.getCurrentItem().setAmount(0);
 				return;
 			}
-			if(e.getCursor().getType() == Material.AIR){
+			if (e.getCursor().getType() == Material.AIR) {
 				e.setCursor(ItemStackCopy.getItemStackCopy(e.getCurrentItem(), e.getCurrentItem().getAmount()));
 				e.getCurrentItem().setAmount(0);
 				return;
