@@ -16,16 +16,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import me.PsionicTemplar.templarIndustries.Start;
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarBlock;
-import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Generator.TemplarCoalGenerator;
+import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Generator.TemplarGenerator;
 import net.md_5.bungee.api.ChatColor;
 
-public class CopperWire extends TemplarBlock{
-	
-	private int voltage = 0;
+public class CopperWire extends Wire{
 	
 	public CopperWire(String name) {
-		super(name, 0);
-		this.isWire = true;
+		super(name, 0, 10.0);
 	}
 
 	@Override
@@ -54,64 +51,28 @@ public class CopperWire extends TemplarBlock{
 	public void onBlockPlace(BlockPlaceEvent e) {
 		
 		Location l = e.getBlock().getLocation();
+		this.voltages.put(l, 0.0);
 		List<Location> complete = new ArrayList<Location>();
 		
 		Location genLocation = getGeneratorLocation(complete, l);
+		TemplarGenerator tcg = null;
 		if (genLocation == null) {
 			return;
 		} else {
-			TemplarCoalGenerator tcg = (TemplarCoalGenerator) Start.getBlock("Templar Coal Generator");
+			for(TemplarBlock tb : Start.getBlocks()){
+				if(!tb.getLocations().containsKey(genLocation)){
+					continue;
+				}
+				tcg = (TemplarGenerator) tb;
+			}
 			tcg.createTree(genLocation);
 		}
 		
 	}
-	
-	private Location getGeneratorLocation(List<Location> complete, Location l){
-		Location newL = null;
-		List<Location> possible = new ArrayList<Location>();
-		possible.add(new Location(l.getWorld(), l.getX()+1, l.getY(), l.getZ()));
-		possible.add(new Location(l.getWorld(), l.getX()-1, l.getY(), l.getZ()));
-		possible.add(new Location(l.getWorld(), l.getX(), l.getY()+1, l.getZ()));
-		possible.add(new Location(l.getWorld(), l.getX(), l.getY()-1, l.getZ()));
-		possible.add(new Location(l.getWorld(), l.getX(), l.getY(), l.getZ()+1));
-		possible.add(new Location(l.getWorld(), l.getX(), l.getY(), l.getZ()-1));
-		
-		for(Location ll : possible){
-			if(Start.getBlock("Templar Coal Generator").getLocations().containsKey(ll)){
-				return ll;
-			}else if(Start.getBlock("Copper Wire").getLocations().containsKey(ll)){
-				if(complete.contains(ll)){
-					continue;
-				}
-				complete.add(l);
-				newL = getGeneratorLocation(complete, ll);
-				complete.remove(l);
-				if(newL != null){
-					break;
-				}
-			}
-		}
-		complete.add(l);
-		return newL;
-	}
 
 	@Override
-	public void onBlockBreak(BlockBreakEvent e) {}
-	
-	public void addVoltage(int amount){
-		this.voltage += amount;
-		if(this.voltage > 10){
-			this.voltage = 10;
-		}
+	public void onBlockBreak(BlockBreakEvent e) {
+		this.voltages.remove(e.getBlock().getLocation());
 	}
-	
-	public void takeVoltage(int amount){
-		this.voltage -= amount;
-		if(this.voltage < 0){
-			this.voltage = 0;
-		}
-	}
-
-
 }
 
