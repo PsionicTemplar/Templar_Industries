@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Location;
+import org.bukkit.event.block.BlockPlaceEvent;
 
 import me.PsionicTemplar.templarIndustries.Start;
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarBlock;
+import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Generator.TemplarGenerator;
 
 public abstract class Wire extends TemplarBlock {
 
@@ -52,6 +54,27 @@ public abstract class Wire extends TemplarBlock {
 		}
 		complete.add(l);
 		return newL;
+	}
+	
+	@Override
+	public void onBlockPlace(BlockPlaceEvent e){
+		Location l = e.getBlock().getLocation();
+		this.voltages.put(l, 0.0);
+		List<Location> complete = new ArrayList<Location>();
+		
+		Location genLocation = getGeneratorLocation(complete, l);
+		TemplarGenerator tcg = null;
+		if (genLocation == null) {
+			return;
+		} else {
+			for(TemplarBlock tb : Start.getBlocks()){
+				if(!tb.getLocations().containsKey(genLocation)){
+					continue;
+				}
+				tcg = (TemplarGenerator) tb;
+			}
+			tcg.createTree(genLocation);
+		}
 	}
 
 	public void addVoltage(Location l, double amount) {
