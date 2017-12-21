@@ -35,10 +35,15 @@ public abstract class TemplarBlock implements Listener {
 	protected ConfigObject co;
 	protected String name;
 	protected int inventorySize;
+	
+	protected boolean isWire;
+	protected boolean isGenerator;
 
 	public TemplarBlock(String name, int inventorySize) {
 		this.name = name;
 		this.inventorySize = inventorySize;
+		this.isWire = false;
+		this.isGenerator = false;
 		HashMap<String, Object> defaults = new HashMap<String, Object>();
 		defaults.put("id", 0);
 		defaults.put("open", new ArrayList<Integer>());
@@ -187,7 +192,7 @@ public abstract class TemplarBlock implements Listener {
 
 	@EventHandler
 	public void onBlockInteract(PlayerInteractEvent e) {
-		if (e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getPlayer().isSneaking()) {
+		if (e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getPlayer().isSneaking() || this.isWire) {
 			return;
 		}
 		if (!this.locations.containsKey(e.getClickedBlock().getLocation())) {
@@ -224,4 +229,16 @@ public abstract class TemplarBlock implements Listener {
 	
 	protected abstract void inventoryClick(InventoryClickEvent e, Player p);
 	public abstract void saveInventory(InventoryCloseEvent e, Player p);
+
+	public boolean isWire() {
+		return isWire;
+	}
+
+	public boolean isGenerator() {
+		return isGenerator;
+	}
+
+	public HashMap<Location, Integer> getLocations() {
+		return locations;
+	}
 }
