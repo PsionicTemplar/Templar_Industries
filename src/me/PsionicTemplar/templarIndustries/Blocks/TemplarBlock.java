@@ -126,7 +126,10 @@ public abstract class TemplarBlock implements Listener {
 		locations.put(l, tempId);
 		loadedBlocks.put(tempId, new TemplarBlockObject(this, tempId, l, owner, new ArrayList<UUID>(),
 				new HashMap<Integer, ItemStack>()));
+		onBlockPlace(e);
 	}
+	
+	public abstract void onBlockPlace(BlockPlaceEvent e);
 
 	@EventHandler
 	public void removeBlock(BlockBreakEvent e) {
@@ -163,7 +166,10 @@ public abstract class TemplarBlock implements Listener {
 			}
 
 		}.runTaskLater(Start.getPlugin(), 5);
+		onBlockBreak(e);
 	}
+	
+	public abstract void onBlockBreak(BlockBreakEvent e);
 
 	public abstract ItemStack getItemStack();
 

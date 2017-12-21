@@ -8,6 +8,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -403,5 +405,11 @@ public class IndustrialWorkbench extends TemplarBlock {
 		}
 		this.loadedBlocks.get(this.locations.get(this.inGui.get(p.getUniqueId()))).setItemMap(items);
 	}
+
+	@Override
+	public void onBlockPlace(BlockPlaceEvent e) {}
+
+	@Override
+	public void onBlockBreak(BlockBreakEvent e) {}
 
 }
