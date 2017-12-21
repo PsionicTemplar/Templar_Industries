@@ -16,7 +16,7 @@ import me.PsionicTemplar.templarIndustries.Blocks.TemplarBlock;
 import net.md_5.bungee.api.ChatColor;
 
 public class CopperWire extends TemplarBlock{
-
+	
 	public CopperWire(String name) {
 		super(name, 0);
 	}
@@ -32,10 +32,7 @@ public class CopperWire extends TemplarBlock{
 	}
 
 	@Override
-	protected void closeInventory(InventoryCloseEvent e, Player p) {
-		// TODO Auto-generated method stub
-		
-	}
+	protected void closeInventory(InventoryCloseEvent e, Player p) {}
 
 	@Override
 	protected void openGui(Location l, Player p) {}
@@ -47,10 +44,7 @@ public class CopperWire extends TemplarBlock{
 	public void saveInventory(InventoryCloseEvent e, Player p) {}
 
 	@Override
-	public void onBlockPlace(BlockPlaceEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onBlockPlace(BlockPlaceEvent e) {}
 
 	@Override
 	public void onBlockBreak(BlockBreakEvent e) {}
