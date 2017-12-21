@@ -43,6 +43,7 @@ public class TemplarTree<T> {
 			temp.children = new ArrayList<Node<T>>();
 			temp.blockType = blockType;
 			temp.parent = this;
+			this.children.add(temp);
 		}
 	}
 	

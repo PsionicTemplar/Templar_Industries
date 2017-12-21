@@ -1,5 +1,6 @@
 package me.PsionicTemplar.templarIndustries;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
@@ -11,6 +12,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarBlock;
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.IndustrialWorkbench;
+import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.TemplarCoalGenerator;
+import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Wire.CopperWire;
 import me.PsionicTemplar.templarIndustries.Recipes.TemplarIndustriesRecipes.TestRecipes;
 
 public class Start extends JavaPlugin {
@@ -36,6 +39,8 @@ public class Start extends JavaPlugin {
 			this.getCommand("test").setExecutor(new CommandExtender());
 
 			blocks.put("Industrial Workbench", new IndustrialWorkbench("Industrial Workbench"));
+			blocks.put("Copper Wire", new CopperWire("Copper Wire"));
+			blocks.put("Templar Coal Generator", new TemplarCoalGenerator("Templar Coal Generator"));
 			loadEvents();
 
 			TestRecipes.load();
@@ -79,6 +84,10 @@ public class Start extends JavaPlugin {
 		} catch (Exception ex) {
 			return null;
 		}
+	}
+	
+	public static Collection<TemplarBlock> getBlocks(){
+		return blocks.values();
 	}
 
 }

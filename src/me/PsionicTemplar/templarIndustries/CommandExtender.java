@@ -15,7 +15,7 @@ public class CommandExtender implements CommandExecutor {
 		}
 		switch(alias.toString()){
 		case "test":
-			p.getInventory().addItem(Start.getBlock("Industrial Workbench").getItemStack());
+			p.getInventory().addItem(Start.getBlock("Copper Wire").getItemStack());
 			return true;
 		}
 		return false;
