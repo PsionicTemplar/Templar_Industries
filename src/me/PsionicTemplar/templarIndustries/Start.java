@@ -12,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarBlock;
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.IndustrialWorkbench;
-import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.TemplarCoalGenerator;
+import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Generator.TemplarCoalGenerator;
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Wire.CopperWire;
 import me.PsionicTemplar.templarIndustries.Recipes.TemplarIndustriesRecipes.TestRecipes;
 

@@ -38,12 +38,14 @@ public abstract class TemplarBlock implements Listener {
 	
 	protected boolean isWire;
 	protected boolean isGenerator;
+	protected boolean isElectrical;
 
 	public TemplarBlock(String name, int inventorySize) {
 		this.name = name;
 		this.inventorySize = inventorySize;
 		this.isWire = false;
 		this.isGenerator = false;
+		this.isElectrical = false;
 		HashMap<String, Object> defaults = new HashMap<String, Object>();
 		defaults.put("id", 0);
 		defaults.put("open", new ArrayList<Integer>());
@@ -236,6 +238,10 @@ public abstract class TemplarBlock implements Listener {
 
 	public boolean isGenerator() {
 		return isGenerator;
+	}
+	
+	public boolean isElectrical(){
+		return isElectrical;
 	}
 
 	public HashMap<Location, Integer> getLocations() {

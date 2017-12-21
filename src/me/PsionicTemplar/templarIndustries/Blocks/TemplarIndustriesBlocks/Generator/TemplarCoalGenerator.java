@@ -1,4 +1,4 @@
-package me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks;
+package me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Generator;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import me.PsionicTemplar.templarIndustries.Start;
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarBlock;
-import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.TemplarCoalGenerator;
+import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Generator.TemplarCoalGenerator;
 import net.md_5.bungee.api.ChatColor;
 
 public class CopperWire extends TemplarBlock{
