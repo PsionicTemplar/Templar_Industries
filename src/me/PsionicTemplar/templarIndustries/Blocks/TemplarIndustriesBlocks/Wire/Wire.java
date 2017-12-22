@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Location;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import me.PsionicTemplar.templarIndustries.Start;
@@ -14,11 +15,11 @@ import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Genera
 public abstract class Wire extends TemplarBlock {
 
 	protected HashMap<Location, Double> voltages = new HashMap<Location, Double>();
-	protected double maxVoltage;
+	protected HashMap<Location, Double> loss = new HashMap<Location, Double>();
+	protected HashMap<Location, Double> maxVoltage = new HashMap<Location, Double>();
 
-	public Wire(String name, int inventorySize, double maxVoltage) {
+	public Wire(String name, int inventorySize) {
 		super(name, inventorySize);
-		this.maxVoltage = maxVoltage;
 		this.isWire = true;
 	}
 
@@ -77,21 +78,36 @@ public abstract class Wire extends TemplarBlock {
 		}
 	}
 
-	public void addVoltage(Location l, double amount) {
-		Double voltage = voltages.get(l);
-		voltage += amount;
-		if (voltage > this.maxVoltage) {
-			voltage = this.maxVoltage;
-		}
-		voltages.put(l, voltage);
+	@Override
+	public void onBlockBreak(BlockBreakEvent e) {
+		this.voltages.remove(e.getBlock().getLocation());
 	}
 
-	public void takeVoltage(Location l, double amount) {
+	public Wire addVoltage(Location l, double amount) {
+		Double voltage = voltages.get(l);
+		voltage += amount;
+		if (voltage > this.maxVoltage.get(l)) {
+			voltage = this.maxVoltage.get(l);
+		}
+		voltages.put(l, voltage);
+		return this;
+	}
+
+	public Wire takeVoltage(Location l, double amount) {
 		Double voltage = voltages.get(l);
 		voltage += amount;
 		if (voltage < 0) {
 			voltage = 0.0;
 		}
 		voltages.put(l, voltage);
+		return this;
+	}
+	
+	public double getCurrentVoltage(Location l){
+		double v = (this.voltages.get(l) - this.loss.get(l));
+		if(v < 0){
+			v = 0;
+		}
+		return v;
 	}
 }

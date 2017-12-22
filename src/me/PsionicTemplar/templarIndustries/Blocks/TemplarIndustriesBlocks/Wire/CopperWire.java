@@ -5,7 +5,7 @@ import java.util.Arrays;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
@@ -16,7 +16,7 @@ import net.md_5.bungee.api.ChatColor;
 public class CopperWire extends Wire{
 	
 	public CopperWire(String name) {
-		super(name, 0, 10.0);
+		super(name, 0);
 	}
 
 	@Override
@@ -27,6 +27,12 @@ public class CopperWire extends Wire{
 		im.setLore(Arrays.asList(ChatColor.GRAY + "Conducts 10 Tw/t", ChatColor.DARK_GRAY + "Templar Industries Wire"));
 		i.setItemMeta(im);
 		return i;
+	}
+	
+	@Override
+	public void onBlockPlace(BlockPlaceEvent e){
+		this.loss.put(e.getBlock().getLocation(), 0.3);
+		this.maxVoltage.put(e.getBlock().getLocation(), 10.0);
 	}
 
 	@Override
@@ -40,10 +46,5 @@ public class CopperWire extends Wire{
 
 	@Override
 	public void saveInventory(InventoryCloseEvent e, Player p) {}
-
-	@Override
-	public void onBlockBreak(BlockBreakEvent e) {
-		this.voltages.remove(e.getBlock().getLocation());
-	}
 }
 
