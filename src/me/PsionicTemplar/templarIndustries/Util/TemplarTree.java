@@ -13,6 +13,47 @@ public class TemplarTree<T> {
 		root.data = rootData;
 		root.children = new ArrayList<Node<T>>();
 		root.blockType = blockType;
+		root.depth = 0;
+	}
+	
+	public void removeNode(T rootData) {
+		Node<T> node = this.getNodeInstance();
+		removeNodeR(rootData, node);
+	}
+	
+	private void removeNodeR(T rootData, Node<T> node) {
+		if(node.getData().equals(rootData)) {
+			if(node.getParent() == null) {
+				return;
+			}else {
+				node.getParent().getChildren().remove(node);
+				return;
+			}
+		}else {
+			for(Node<T> n : node.getChildren()) {
+				removeNodeR(rootData, n);
+			}
+		}
+	}
+	
+	public Node<T> findNode(T rootData) {
+		Node<T> node = this.getNodeInstance();
+		return findNodeR(rootData, node);
+	}
+	
+	private Node<T> findNodeR(T rootData, Node<T> node) {
+		if(node.getData().equals(rootData)) {
+			return node;
+		}else {
+			for(Node<T> n : node.getChildren()) {
+				Node<T> found = findNodeR(rootData, n);
+				if(found == null) {
+					return null;
+				}
+				return found;
+			}
+			return null;
+		}
 	}
 
 	public static class Node<T> {
@@ -20,6 +61,7 @@ public class TemplarTree<T> {
 		private Node<T> parent;
 		private TemplarBlock blockType;
 		private List<Node<T>> children;
+		private int depth;
 		
 		public List<Node<T>> getChildren(){
 			return this.children;
@@ -37,6 +79,10 @@ public class TemplarTree<T> {
 			return blockType;
 		}
 		
+		public int getDepth() {
+			return this.depth;
+		}
+		
 		public void addChild(T rootData, TemplarBlock blockType) {
 			Node<T> temp = new Node<T>();
 			temp.data = rootData;
@@ -44,6 +90,7 @@ public class TemplarTree<T> {
 			temp.blockType = blockType;
 			temp.parent = this;
 			this.children.add(temp);
+			temp.depth = this.depth + 1;
 		}
 	}
 	

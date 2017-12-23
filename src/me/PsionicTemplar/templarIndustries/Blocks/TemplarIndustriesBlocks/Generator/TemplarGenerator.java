@@ -14,6 +14,7 @@ import me.PsionicTemplar.templarIndustries.Util.TemplarTree.Node;
 public abstract class TemplarGenerator extends TemplarBlock{
 
 	protected HashMap<Location, TemplarTree<Location>> trees = new HashMap<Location, TemplarTree<Location>>();
+	protected HashMap<Location, Double> outputs = new HashMap<Location, Double>();
 	
 	public TemplarGenerator(String name, int inventorySize) {
 		super(name, inventorySize);
@@ -51,6 +52,38 @@ public abstract class TemplarGenerator extends TemplarBlock{
 			traverseTree(node.getData(), complete, node);
 		}
 		complete.add(l);
+		sendEnergy(l);
+	}
+	
+	public void sendEnergy(Location l) {
+		TemplarTree<Location> tree = trees.get(l);
+		sendEnergyR(tree.getNodeInstance());
+	}
+	
+	private void sendEnergyR(Node<Location> node) {
+		//TODO Send energy through wires
+	}
+	
+	public boolean hasElectricMachineInTree(Location l) {
+		TemplarTree<Location> tree = trees.get(l);
+		return findElectricMachine(tree.getNodeInstance());
+	}
+	
+	private boolean findElectricMachine(Node<Location> node) {
+		if(node.getBlockType().isElectrical()) {
+			return true;
+		}else {
+			for(Node<Location> n : node.getChildren()) {
+				if(findElectricMachine(n)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+	
+	public double getMachineOutput(Location l) {
+		return outputs.get(l);
 	}
 
 }

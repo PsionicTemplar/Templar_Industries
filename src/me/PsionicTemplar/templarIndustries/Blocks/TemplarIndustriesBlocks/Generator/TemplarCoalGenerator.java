@@ -24,6 +24,7 @@ public class TemplarCoalGenerator extends TemplarGenerator {
 	@Override
 	public void onBlockPlace(BlockPlaceEvent e) {
 		this.createTree(e.getBlock().getLocation());
+		this.outputs.put(e.getBlock().getLocation(), 2.0);
 	}
 
 	
