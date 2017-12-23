@@ -8,6 +8,7 @@ import org.bukkit.Location;
 
 import me.PsionicTemplar.templarIndustries.Start;
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarBlock;
+import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Wire.Wire;
 import me.PsionicTemplar.templarIndustries.Util.TemplarTree;
 import me.PsionicTemplar.templarIndustries.Util.TemplarTree.Node;
 
@@ -49,6 +50,9 @@ public abstract class TemplarGenerator extends TemplarBlock{
 			}
 		}
 		for (Node<Location> node : n.getChildren()) {
+			if(node.getBlockType().isElectrical() || node.getBlockType().isGenerator()) {
+				continue;
+			}
 			traverseTree(node.getData(), complete, node);
 		}
 		complete.add(l);
@@ -57,11 +61,13 @@ public abstract class TemplarGenerator extends TemplarBlock{
 	
 	public void sendEnergy(Location l) {
 		TemplarTree<Location> tree = trees.get(l);
-		sendEnergyR(tree.getNodeInstance());
+		for(Node<Location> n : tree.getNodeInstance().getChildren()) {
+			sendEnergyR(n, new ArrayList<Location>());
+		}
 	}
 	
-	private void sendEnergyR(Node<Location> node) {
-		//TODO Send energy through wires
+	private void sendEnergyR(Node<Location> node, List<Location> complete) {
+		
 	}
 	
 	public boolean hasElectricMachineInTree(Location l) {
