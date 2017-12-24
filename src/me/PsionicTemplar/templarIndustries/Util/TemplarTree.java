@@ -42,6 +42,7 @@ public class TemplarTree<T> {
 	}
 	
 	private Node<T> findNodeR(T rootData, Node<T> node) {
+		System.out.println(rootData);
 		if(node.getData().equals(rootData)) {
 			return node;
 		}else {

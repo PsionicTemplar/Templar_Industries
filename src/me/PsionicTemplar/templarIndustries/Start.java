@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarBlock;
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.IndustrialWorkbench;
+import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Electrical.TestElectric;
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Generator.TemplarCoalGenerator;
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Wire.CopperWire;
 import me.PsionicTemplar.templarIndustries.Recipes.TemplarIndustriesRecipes.TestRecipes;
@@ -41,6 +42,7 @@ public class Start extends JavaPlugin {
 			blocks.put("Industrial Workbench", new IndustrialWorkbench("Industrial Workbench"));
 			blocks.put("Copper Wire", new CopperWire("Copper Wire"));
 			blocks.put("Templar Coal Generator", new TemplarCoalGenerator("Templar Coal Generator"));
+			blocks.put("Test", new TestElectric("Test"));
 			loadEvents();
 
 			TestRecipes.load();
