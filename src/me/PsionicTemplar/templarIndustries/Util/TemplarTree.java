@@ -92,6 +92,12 @@ public class TemplarTree<T> {
 			this.children.add(temp);
 			temp.depth = this.depth + 1;
 		}
+		
+		public void removeChild(Node<T> node){
+			if(this.children.contains(node)){
+				this.children.remove(node);
+			}
+		}
 	}
 	
 	public Node<T> getNodeInstance(){
