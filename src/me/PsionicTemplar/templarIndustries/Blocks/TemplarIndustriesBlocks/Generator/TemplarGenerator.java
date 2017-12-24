@@ -8,6 +8,7 @@ import org.bukkit.Location;
 
 import me.PsionicTemplar.templarIndustries.Start;
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarBlock;
+import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Wire.Wire;
 import me.PsionicTemplar.templarIndustries.Util.TemplarTree;
 import me.PsionicTemplar.templarIndustries.Util.TemplarTree.Node;
 
@@ -15,6 +16,7 @@ public abstract class TemplarGenerator extends TemplarBlock {
 
 	protected HashMap<Location, TemplarTree<Location>> trees = new HashMap<Location, TemplarTree<Location>>();
 	protected HashMap<Location, Double> outputs = new HashMap<Location, Double>();
+	protected HashMap<Location, Double> maxVoltage = new HashMap<Location, Double>();
 
 	public TemplarGenerator(String name, int inventorySize) {
 		super(name, inventorySize);
@@ -42,15 +44,15 @@ public abstract class TemplarGenerator extends TemplarBlock {
 				Node<Location> node = first.findNode(ll);
 				node.getParent().removeChild(node);
 				complete.remove(ll);
-				for(Location lll : complete){
+				for (Location lll : complete) {
 					Node<Location> nn = first.findNode(lll);
-					if(!nn.getParent().equals(n)){
+					if (!nn.getParent().equals(n)) {
 						continue;
 					}
 					n.removeChild(nn);
 					complete.remove(nn);
 				}
-			}else{
+			} else {
 				continue;
 			}
 			for (TemplarBlock t : Start.getBlocks()) {
@@ -80,11 +82,66 @@ public abstract class TemplarGenerator extends TemplarBlock {
 
 	public void sendEnergy(Location l) {
 		TemplarTree<Location> tree = trees.get(l);
-		sendEnergyR(tree.getNodeInstance(), new ArrayList<Location>());
+		resetEnergyR(tree.getNodeInstance());
+		sendEnergyR(tree.getNodeInstance(), 0);
 	}
 
-	private void sendEnergyR(Node<Location> node, List<Location> complete) {
+	private void resetEnergyR(Node<Location> node) {
+		boolean isWire = node.getBlockType().isWire();
+		Wire w = null;
+		// boolean isElectrical = node.getBlockType().isElectrical();
+		// ElectricalBlock e = null;
+		if (isWire) {
+			w = (Wire) node.getBlockType();
+			w.setInput(node.getData(), 0.0);
+		}
+		// if(isElectrical){
+		// e = (ElectricalBlock) node.getBlockType();
+		// <Set input to 0>
+		// }
+		for (Node<Location> n : node.getChildren()) {
+			resetEnergyR(n);
+		}
+	}
 
+	private void sendEnergyR(Node<Location> node, double newInput) {
+		boolean isWire = node.getBlockType().isWire();
+		Wire w = null;
+		// boolean isElectrical = node.getBlockType().isElectrical();
+		// ElectricalBlock e = null;
+		boolean isGenerator = node.getBlockType().isGenerator();
+		TemplarGenerator t = null;
+		int children = node.getChildren().size();
+		double output = 0.0;
+		if (isWire) {
+			w = (Wire) node.getBlockType();
+			if (w.getOutput(node.getData()) == 0) {
+				return;
+			} else {
+				w.setInput(node.getData(), w.getInput(node.getData()) + newInput);
+				w.setOutput(node.getData());
+				output = w.getOutput(node.getData());
+			}
+		}
+		// if(isElectrical){
+		// e = (ElectricalBlock) node.getBlockType();
+		// <Set input>
+		// }
+		if (isGenerator) {
+			t = (TemplarGenerator) node.getBlockType();
+			if (t.getMachineOutput(node.getData()) == 0) {
+				return;
+			} else {
+				output = t.getMachineOutput(node.getData());
+			}
+		}
+		double outputPerChild = output;
+		if (children != 0) {
+			outputPerChild = output / children;
+		}
+		for (Node<Location> n : node.getChildren()) {
+			sendEnergyR(n, outputPerChild);
+		}
 	}
 
 	public boolean hasElectricMachineInTree(Location l) {
@@ -107,6 +164,19 @@ public abstract class TemplarGenerator extends TemplarBlock {
 
 	public double getMachineOutput(Location l) {
 		return outputs.get(l);
+	}
+
+	public TemplarGenerator setMachineOutput(Location l, double amount) {
+		if (amount > this.maxVoltage.get(l)) {
+			this.outputs.put(l, this.maxVoltage.get(l));
+			return this;
+		}
+		this.outputs.put(l, amount);
+		return this;
+	}
+
+	public double getMaxOutput(Location l) {
+		return this.maxVoltage.get(l);
 	}
 
 }

@@ -24,7 +24,8 @@ public class TemplarCoalGenerator extends TemplarGenerator {
 	@Override
 	public void onBlockPlace(BlockPlaceEvent e) {
 		this.createTree(e.getBlock().getLocation());
-		this.outputs.put(e.getBlock().getLocation(), 2.0);
+		this.outputs.put(e.getBlock().getLocation(), 0.0);
+		this.maxVoltage.put(e.getBlock().getLocation(), 2.0);
 	}
 
 	

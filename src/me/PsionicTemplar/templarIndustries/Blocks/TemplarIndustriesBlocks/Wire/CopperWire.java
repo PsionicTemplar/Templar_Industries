@@ -33,6 +33,8 @@ public class CopperWire extends Wire{
 	public void onBlockPlace(BlockPlaceEvent e){
 		this.loss.put(e.getBlock().getLocation(), 0.3);
 		this.maxVoltage.put(e.getBlock().getLocation(), 10.0);
+		this.inputs.put(e.getBlock().getLocation(), 0.0);
+		this.outputs.put(e.getBlock().getLocation(), 0.0);
 	}
 
 	@Override

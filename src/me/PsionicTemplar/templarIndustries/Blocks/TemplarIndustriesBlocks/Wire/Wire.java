@@ -14,9 +14,10 @@ import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Genera
 
 public abstract class Wire extends TemplarBlock {
 
-	protected HashMap<Location, Double> voltages = new HashMap<Location, Double>();
 	protected HashMap<Location, Double> loss = new HashMap<Location, Double>();
 	protected HashMap<Location, Double> maxVoltage = new HashMap<Location, Double>();
+	protected HashMap<Location, Double> inputs = new HashMap<Location, Double>();
+	protected HashMap<Location, Double> outputs = new HashMap<Location, Double>();
 
 	public Wire(String name, int inventorySize) {
 		super(name, inventorySize);
@@ -56,20 +57,19 @@ public abstract class Wire extends TemplarBlock {
 		complete.add(l);
 		return newL;
 	}
-	
+
 	@Override
-	public void onBlockPlace(BlockPlaceEvent e){
+	public void onBlockPlace(BlockPlaceEvent e) {
 		Location l = e.getBlock().getLocation();
-		this.voltages.put(l, 0.0);
 		List<Location> complete = new ArrayList<Location>();
-		
+
 		Location genLocation = getGeneratorLocation(complete, l);
 		TemplarGenerator tcg = null;
 		if (genLocation == null) {
 			return;
 		} else {
-			for(TemplarBlock tb : Start.getBlocks()){
-				if(!tb.getLocations().containsKey(genLocation)){
+			for (TemplarBlock tb : Start.getBlocks()) {
+				if (!tb.getLocations().containsKey(genLocation)) {
 					continue;
 				}
 				tcg = (TemplarGenerator) tb;
@@ -80,34 +80,39 @@ public abstract class Wire extends TemplarBlock {
 
 	@Override
 	public void onBlockBreak(BlockBreakEvent e) {
-		this.voltages.remove(e.getBlock().getLocation());
+		this.loss.remove(e.getBlock().getLocation());
+		this.maxVoltage.remove(e.getBlock().getLocation());
+		this.inputs.remove(e.getBlock().getLocation());
+		this.outputs.remove(e.getBlock().getLocation());
 	}
 
-	public Wire addVoltage(Location l, double amount) {
-		Double voltage = voltages.get(l);
-		voltage += amount;
-		if (voltage > this.maxVoltage.get(l)) {
-			voltage = this.maxVoltage.get(l);
-		}
-		voltages.put(l, voltage);
-		return this;
-	}
-
-	public Wire takeVoltage(Location l, double amount) {
-		Double voltage = voltages.get(l);
-		voltage += amount;
-		if (voltage < 0) {
-			voltage = 0.0;
-		}
-		voltages.put(l, voltage);
-		return this;
-	}
-	
-	public double getCurrentVoltage(Location l){
-		double v = (this.voltages.get(l) - this.loss.get(l));
-		if(v < 0){
+	public double getCurrentVoltage(Location l) {
+		double v = (this.inputs.get(l) - this.loss.get(l));
+		if (v < 0) {
 			v = 0;
 		}
 		return v;
+	}
+
+	public double getInput(Location l) {
+		return inputs.get(l);
+	}
+
+	public Wire setInput(Location l, double amount) {
+		if(amount > this.maxVoltage.get(l)){
+			inputs.put(l, this.maxVoltage.get(l));
+			return this;
+		}
+		inputs.put(l, amount);
+		return this;
+	}
+
+	public double getOutput(Location l) {
+		return this.outputs.get(l);
+	}
+
+	public Wire setOutput(Location l) {
+		this.outputs.put(l, getCurrentVoltage(l));
+		return this;
 	}
 }
