@@ -180,9 +180,11 @@ public abstract class TemplarBlock implements Listener {
 
 	public abstract ItemStack getItemStack();
 
+	
+	//Look at this bit of code and see if the utility will help reduce it
 	public ItemStack getBlockItem() {
 		ItemStack copyThis = getItemStack();
-		ItemStack i = new ItemStack(copyThis.getType(), 1, copyThis.getDurability());
+		ItemStack i = new ItemStack(copyThis.getType(), 1);
 		i.setItemMeta(copyThis.getItemMeta());
 		if (!copyThis.getEnchantments().isEmpty()) {
 			for (Enchantment e : copyThis.getEnchantments().keySet()) {
