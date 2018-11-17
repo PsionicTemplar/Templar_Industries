@@ -21,7 +21,7 @@ public class CopperWire extends Wire{
 
 	@Override
 	public ItemStack getItemStack() {
-		ItemStack i = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 1);
+		ItemStack i = new ItemStack(Material.ORANGE_STAINED_GLASS_PANE, 1);
 		ItemMeta im = i.getItemMeta();
 		im.setDisplayName(ChatColor.GOLD + "Copper Wire");
 		im.setLore(Arrays.asList(ChatColor.GRAY + "Conducts 10 Tw/t", ChatColor.DARK_GRAY + "Templar Industries Wire"));

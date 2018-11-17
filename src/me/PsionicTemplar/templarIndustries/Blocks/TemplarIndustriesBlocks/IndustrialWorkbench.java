@@ -38,7 +38,7 @@ public class IndustrialWorkbench extends TemplarBlock {
 
 	@Override
 	public ItemStack getItemStack() {
-		ItemStack i = new ItemStack(Material.WORKBENCH);
+		ItemStack i = new ItemStack(Material.CRAFTING_TABLE);
 		ItemMeta im = i.getItemMeta();
 		im.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8I&7n&6dustrial Workben&7c&8h"));
 		im.setLore(Arrays.asList(ChatColor.DARK_GRAY + "Templar Industries Core Block"));
@@ -71,11 +71,11 @@ public class IndustrialWorkbench extends TemplarBlock {
 		for (int slot : this.loadedBlocks.get(this.locations.get(l)).getItemMap().keySet()) {
 			inv.setItem(slot, this.loadedBlocks.get(this.locations.get(l)).getItemMap().get(slot));
 		}
-		ItemStack none = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15);
+		ItemStack none = new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1);
 		ItemMeta im = none.getItemMeta();
 		im.setDisplayName("");
 		none.setItemMeta(im);
-		ItemStack craft = new ItemStack(Material.WORKBENCH);
+		ItemStack craft = new ItemStack(Material.CRAFTING_TABLE);
 		im = craft.getItemMeta();
 		im.setDisplayName(ChatColor.GREEN + "Click Me to Craft");
 		im.setLore(Arrays.asList(ChatColor.DARK_GREEN + "Shift Left Click to Craft a Stack"));
