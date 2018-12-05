@@ -39,13 +39,30 @@ public abstract class TemplarBlock implements Listener {
 	protected boolean isWire;
 	protected boolean isGenerator;
 	protected boolean isElectrical;
+	
+	/**
+	 * 
+	 * @param name
+	 * @param inventorySize
+	 * 
+	 * Constructor for a Templar Block. It takes in the name of a block and the inventory size you'd like
+	 * for the type of block.
+	 * 
+	 * Put 0 for unclickable.
+	 * 
+	 * @author Nicholas Braniff
+	 */
 
 	public TemplarBlock(String name, int inventorySize) {
+		//TODO Please add the ability to make it unclickable. See up above.
+		
+		//Setting the variables
 		this.name = name;
 		this.inventorySize = inventorySize;
 		this.isWire = false;
 		this.isGenerator = false;
 		this.isElectrical = false;
+		//Creating a new Map in order to store the information about the block.
 		HashMap<String, Object> defaults = new HashMap<String, Object>();
 		defaults.put("id", 0);
 		defaults.put("open", new ArrayList<Integer>());
