@@ -39,56 +39,86 @@ public abstract class TemplarBlock implements Listener {
 	protected boolean isWire;
 	protected boolean isGenerator;
 	protected boolean isElectrical;
-
+	
 	/**
+	 * Constructor for a Templar Block. It takes in the name of a block and the inventory size you'd like
+	 * for the type of block. It will then create a document with a Config Object add add the defaults to it.
 	 * 
+	 * Put 0 for unclickable.
 	 * @param name
 	 * @param inventorySize
-	 * 
-	 * Constructor for a TemplarBlock. 
-	 * 
-	 * @author PsionicTemplar
+	 * @author Nicholas Braniff
 	 */
 	
 	public TemplarBlock(String name, int inventorySize) {
+		//TODO Please add the ability to make it unclickable. See up above.
+		
+		//Setting the variables
 		this.name = name;
 		this.inventorySize = inventorySize;
 		this.isWire = false;
 		this.isGenerator = false;
 		this.isElectrical = false;
+		//Creating a new Map in order to store the information about the block.
 		HashMap<String, Object> defaults = new HashMap<String, Object>();
 		defaults.put("id", 0);
 		defaults.put("open", new ArrayList<Integer>());
 		String path = Start.getPlugin().getDataFolder() + "/Block_Data";
 		String finalName = name + ".yml";
+		//Creating a new FileConfiguration for the data to be stored on the hard drive.
+		//See ConfigObject docmuentation for more information on this process.
 		this.co = new ConfigObject(path, finalName, defaults);
 		init();
 	}
+	
+	/**
+	 * Used on startup. Traces the FileConfiguration and loads needed information about the blocks into ram.
+	 * 
+	 * @author Nicholas Braniff
+	 */
 
 	protected void init() {
+		//Retrieve the configuration from the ConfigObject.
 		FileConfiguration config = co.getConfig();
+		//Get the next available id
 		this.id = config.getInt("id");
+		//Start at ID 0 and go until the end
 		for (int i = 0; i < this.id; i++) {
 			if (!config.contains(i + "")) {
+				//Continue if no information exists with the id
 				continue;
 			}
+			//Get location information for the block
 			Location l = new Location(Bukkit.getWorld(config.getString(i + ".world")), config.getInt(i + ".x"),
 					config.getInt(i + ".y"), config.getInt(i + ".z"));
+			//Load the owner
 			UUID owner = UUID.fromString(config.getString(i + ".owner"));
+			//Load anyone trusted.
 			List<String> trusted = config.getStringList(i + ".trusted");
 			List<UUID> finalTrusted = new ArrayList<UUID>();
+			//Loading all those who are trusted into their UUID forms
 			for (String s : trusted) {
 				finalTrusted.add(UUID.fromString(s));
 			}
+			//Load in the currently used slots for the items
 			List<Integer> itemSlots = config.getIntegerList(i + ".itemSlots");
 			HashMap<Integer, ItemStack> items = new HashMap<Integer, ItemStack>();
 			for (int t : itemSlots) {
+				//Loop through and assign each used slot an item
 				items.put(t, config.getItemStack(i + ".items." + t));
 			}
+			//Put all that information into a hashmap which can call the block from the block id.
 			loadedBlocks.put(i, new TemplarBlockObject(this, i, l, owner, finalTrusted, items));
+			//Put the location in a hashmap with the id so a block can be called using a location by getting the id.
 			locations.put(l, i);
 		}
 	}
+	
+	/**
+	 * Easy to use method for the blocks to increase the latest id by one and then write that to the fileconfiguration
+	 * 
+	 * @author Nicholas Braniff
+	 */
 
 	protected void increaseId() {
 		this.id = this.id + 1;
