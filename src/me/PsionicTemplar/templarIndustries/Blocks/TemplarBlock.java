@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -289,24 +288,43 @@ public abstract class TemplarBlock implements Listener {
 	 * @author Nicholas Braniff
 	 * @return
 	 */
+	
 	public ItemStack getBlockItemClone() {
 		ItemStack copyThis = getItemStack();
 		ItemStack i = ItemStackCopy.getItemStackCopy(copyThis);
 		return i;
 	}
+	
+	/**
+	 * Right click event used to trigger the opening of the block's gui
+	 * 
+	 * @author Nicholas Braniff
+	 * @param e
+	 */
 
 	@EventHandler
 	public void onBlockInteract(PlayerInteractEvent e) {
+		//Return if the person isn't right clicking the block, is crouching, or the block is a wire
 		if (e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getPlayer().isSneaking() || this.isWire) {
 			return;
 		}
+		//Verify the block's location matches an actual block's location
 		if (!this.locations.containsKey(e.getClickedBlock().getLocation())) {
 			return;
 		}
 		e.setCancelled(true);
+		//Open the gui
 		openGui(e.getClickedBlock().getLocation(), e.getPlayer());
+		//Put the player in the gui hashmap to keep track of who is and isn't in the gui
 		inGui.put(e.getPlayer().getUniqueId(), e.getClickedBlock().getLocation());
 	}
+	
+	/**
+	 * Event to remove the person from the gui hashmap once the inventory is closed. 
+	 * 
+	 * @author Nicholas Braniff
+	 * @param e
+	 */
 
 	@EventHandler
 	public void onInventoryClose(InventoryCloseEvent e) {
@@ -316,36 +334,123 @@ public abstract class TemplarBlock implements Listener {
 		closeInventory(e, Bukkit.getPlayer(e.getPlayer().getUniqueId()));
 		inGui.remove(e.getPlayer().getUniqueId());
 	}
+	
+	/**
+	 * Abstract method called when inventory is closed so extended classes can manipulate it.
+	 * 
+	 * @author Nicholas Braniff
+	 * @param e
+	 * @param player
+	 */
 
-	protected abstract void closeInventory(InventoryCloseEvent e, Player p);
+	protected abstract void closeInventory(InventoryCloseEvent e, Player player);
+	
+	/**
+	 * Abstract method used so the extended classes can design the openable gui
+	 * 
+	 * @author Nicholas Braniff
+	 * @param location
+	 * @param player
+	 */
 
-	protected abstract void openGui(Location l, Player p);
+	protected abstract void openGui(Location location, Player player);
+	
+	/**
+	 * Inventory click event used to call the abstract method for inventory clicks.
+	 * 
+	 * @author Nicholas Braniff
+	 * @param e
+	 */
 	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e){
+		//Check if person is in gui
 		if(!this.inGui.containsKey(e.getWhoClicked().getUniqueId())){
 			return;
 		}
+		//Make sure the person is clicking inside of the inventory
 		if(e.getClickedInventory() == null){
 			return;
 		}
+		//Call the abstract method
 		inventoryClick(e, Bukkit.getPlayer(e.getWhoClicked().getUniqueId()));
 	}
 	
-	protected abstract void inventoryClick(InventoryClickEvent e, Player p);
+	/**
+	 * Abstract method used to let extended classes choose what happens when something is clicked in an inventory
+	 * 
+	 * @author Nicholas Braniff
+	 * @param e
+	 * @param player
+	 */
+	
+	protected abstract void inventoryClick(InventoryClickEvent e, Player player);
+	
+	/**
+	 * Event used to call the abstract method for saving the inventory and then removing the player from the inGui map.
+	 * 
+	 * @author Nicholas Braniff
+	 * @param e
+	 */
+	
+	@EventHandler
+	public void inventoryCloseEvent(InventoryCloseEvent e) {
+		if(!this.inGui.containsKey(e.getPlayer().getUniqueId())) {
+			return;
+		}
+		this.saveInventory(e, Bukkit.getPlayer(e.getPlayer().getUniqueId()));
+		this.inGui.remove(e.getPlayer().getUniqueId());
+	}
+	
+	/**
+	 * Abstract method for extended classes to add to what should happen when the inventory is closed.
+	 * 
+	 * @author Nicholas Braniff
+	 * @param e
+	 * @param p
+	 */
+	
 	public abstract void saveInventory(InventoryCloseEvent e, Player p);
+	
+	/**
+	 * Return if the block is a wire
+	 * 
+	 * @author Nicholas Braniff
+	 * @return
+	 */
 
 	public boolean isWire() {
 		return isWire;
 	}
+	
+	/**
+	 * Return if the block is a generator
+	 * 
+	 * @author Nicholas Braniff
+	 * @return
+	 */
 
 	public boolean isGenerator() {
 		return isGenerator;
 	}
 	
+	/**
+	 * Return if the block is electrical
+	 * 
+	 * @author Nicholas Braniff
+	 * @return
+	 */
+	
 	public boolean isElectrical(){
 		return isElectrical;
 	}
+	
+	/**
+	 * Return the hashmap of locations
+	 * 
+	 * @author Nicholas Braniff
+	 * @return
+	 */
 
 	public HashMap<Location, Integer> getLocations() {
 		return locations;
