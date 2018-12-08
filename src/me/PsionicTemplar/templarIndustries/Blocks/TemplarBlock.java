@@ -126,6 +126,12 @@ public abstract class TemplarBlock implements Listener {
 		config.set("id", this.id);
 		co.setConfigWrite(config);
 	}
+	
+	/**
+	 * Removing an Id from the list of open Id's
+	 * 
+	 * @author Nicholas Braniff
+	 */
 
 	protected void removeIdFromOpen() {
 		try {
@@ -138,16 +144,31 @@ public abstract class TemplarBlock implements Listener {
 		}
 	}
 	
-	protected void addIdToOpen(int i){
-		this.openIdSlots.add(i);
+	/**
+	 * Adding an Id to the list of reusable Id's
+	 * 
+	 * @author Nicholas Braniff
+	 * @param id
+	 */
+	
+	protected void addIdToOpen(int id){
+		this.openIdSlots.add(id);
 		FileConfiguration config = co.getConfig();
 		config.set("open", this.openIdSlots);
 		co.setConfigWrite(config);
 	}
+	
+	/**
+	 * Event for placing a block. Essentially it assigns the block an Id and adds it to the fileconfiguration to get saved.
+	 * 
+	 * @author Nicholas Braniff
+	 * @param e
+	 */
 
 	@EventHandler
 	public void addBlock(BlockPlaceEvent e) {
-		if (!e.getItemInHand().equals(ItemStackCopy.getItemStackCopy(getBlockItem(), e.getItemInHand().getAmount()))) {
+		//See if the item is the correct item or not
+		if (!e.getItemInHand().equals(ItemStackCopy.getItemStackCopy(getBlockItemClone(), e.getItemInHand().getAmount()))) {
 			return;
 		}
 		FileConfiguration config = co.getConfig();
@@ -155,12 +176,15 @@ public abstract class TemplarBlock implements Listener {
 		UUID owner = e.getPlayer().getUniqueId();
 		int tempId = 0;
 		if (!this.openIdSlots.isEmpty()) {
+			//Grab the first available Id
 			tempId = this.openIdSlots.get(0);
 			removeIdFromOpen();
 		} else {
+			//If no Id's are available, use the current Id and then increase it.
 			tempId = this.id;
 			increaseId();
 		}
+		//Put the information about the block into the config
 		config.set(tempId + ".world", l.getWorld().getName());
 		config.set(tempId + ".x", l.getBlockX());
 		config.set(tempId + ".y", l.getBlockY());
@@ -169,26 +193,48 @@ public abstract class TemplarBlock implements Listener {
 		config.set(tempId + ".trusted", new ArrayList<String>());
 		config.set(tempId + ".itemSlots", new ArrayList<Integer>());
 
+		//Write the config to the harddrive and add the location and the block to the maps for later use.
 		co.setConfigWrite(config);
 		locations.put(l, tempId);
 		loadedBlocks.put(tempId, new TemplarBlockObject(this, tempId, l, owner, new ArrayList<UUID>(),
 				new HashMap<Integer, ItemStack>()));
+		
+		//Call the abstract method in case any class extending this class needs to add more to the block place event.
 		onBlockPlace(e);
 	}
 	
+	/**
+	 * Abstract method used for extended classes in case they need to do anything else on the block place event.
+	 * 
+	 * @author Nicholas Braniff
+	 * @param e
+	 */
+	
 	public abstract void onBlockPlace(BlockPlaceEvent e);
+	
+	/**
+	 * Remove Block Event.
+	 * When a block is broken, it will remove it from the the config and the hashmaps. The used Id will be added to the open Id list.
+	 * 
+	 * @author Nicholas Braniff
+	 * @param e
+	 */
 
 	@EventHandler
 	public void removeBlock(BlockBreakEvent e) {
+		//Verify the broken block's location is an actual location of one of the blocks.
 		Location l = e.getBlock().getLocation();
 		if (!locations.containsKey(l)) {
 			return;
 		}
+		//Add Id to the openId list
 		int tempId = locations.get(l);
 		addIdToOpen(tempId);
+		//Removing the block information from the config and writing it to the harddrive
 		FileConfiguration config = co.getConfig();
 		config.set(tempId + "", null);
 		co.setConfigWrite(config);
+		//Cancelling the event and then manually setting the block to air
 		e.setCancelled(true);
 		new BukkitRunnable() {
 
@@ -198,13 +244,15 @@ public abstract class TemplarBlock implements Listener {
 			}
 
 		}.runTaskLater(Start.getPlugin(), 0);
+		
+		//Setting the location for the item drop; Dropping the correct item so it can be reused; removing the block from memory;
 
 		new BukkitRunnable() {
 
 			@Override
 			public void run() {
 				Location loc = new Location(l.getWorld(), l.getBlockX() + 0.5, l.getBlockY(), l.getBlockZ() + 0.5);
-				loc.getWorld().dropItemNaturally(loc, getBlockItem());
+				loc.getWorld().dropItemNaturally(loc, getBlockItemClone());
 				for (int i : loadedBlocks.get(tempId).getItemMap().keySet()) {
 					loc.getWorld().dropItemNaturally(loc, loadedBlocks.get(tempId).getItemMap().get(i));
 				}
@@ -213,24 +261,37 @@ public abstract class TemplarBlock implements Listener {
 			}
 
 		}.runTaskLater(Start.getPlugin(), 5);
+		//Calling the block break abstract method in case a class wants to add something to this event
 		onBlockBreak(e);
 	}
 	
+	/**
+	 * Abstract method used for extended classes in case they need to do anything else on the block break event.
+	 * 
+	 * @author Nicholas Braniff
+	 * @param e
+	 */
+	
 	public abstract void onBlockBreak(BlockBreakEvent e);
+	
+	/**
+	 * Abstract method for extended classes to define the item they'd like the block to be.
+	 * 
+	 * @author Nicholas Braniff
+	 * @return
+	 */
 
 	public abstract ItemStack getItemStack();
 
-	
-	//Look at this bit of code and see if the utility will help reduce it
-	public ItemStack getBlockItem() {
+	/**
+	 * Get a clone of the block item that's able to be edited.
+	 * 
+	 * @author Nicholas Braniff
+	 * @return
+	 */
+	public ItemStack getBlockItemClone() {
 		ItemStack copyThis = getItemStack();
-		ItemStack i = new ItemStack(copyThis.getType(), 1);
-		i.setItemMeta(copyThis.getItemMeta());
-		if (!copyThis.getEnchantments().isEmpty()) {
-			for (Enchantment e : copyThis.getEnchantments().keySet()) {
-				i.addUnsafeEnchantment(e, copyThis.getEnchantments().get(e));
-			}
-		}
+		ItemStack i = ItemStackCopy.getItemStackCopy(copyThis);
 		return i;
 	}
 
