@@ -40,6 +40,16 @@ public abstract class TemplarBlock implements Listener {
 	protected boolean isGenerator;
 	protected boolean isElectrical;
 
+	/**
+	 * 
+	 * @param name
+	 * @param inventorySize
+	 * 
+	 * Constructor for a TemplarBlock. 
+	 * 
+	 * @author PsionicTemplar
+	 */
+	
 	public TemplarBlock(String name, int inventorySize) {
 		this.name = name;
 		this.inventorySize = inventorySize;
