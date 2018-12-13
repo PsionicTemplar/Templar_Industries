@@ -13,13 +13,17 @@ public class RecipeDataBase {
 	public static HashMap<RecipeType, List<RecipeObject>> recipes = new HashMap<RecipeType, List<RecipeObject>>();
 	
 	/**
-	 * Loads a recipe into memory.
+	 * Loads a recipe into memory. If recipe already exists in the system, return false and kill the plugin.
 	 * 
 	 * @author Nicholas Braniff
 	 * @param ro
+	 * @return
 	 */
 
-	public static void loadRecipe(RecipeObject ro) {
+	public static boolean loadRecipe(RecipeObject ro) {
+		if(getMatchingShapedRecipe(ro) != null || getMatchingShapelessRecipe(ro) != null) {
+			return false;
+		}
 		//Create a new list of recipes
 		List<RecipeObject> r = new ArrayList<RecipeObject>();
 		if (recipes.containsKey(ro.getType())) {
@@ -30,6 +34,7 @@ public class RecipeDataBase {
 		r.add(ro);
 		//Put the list into the map with the key
 		recipes.put(ro.getType(), r);
+		return true;
 	}
 	
 	/**
@@ -64,6 +69,7 @@ public class RecipeDataBase {
 
 	public static RecipeObject getMatchingShapedRecipe(RecipeObject ro) {
 		ItemStack[] items = ro.getItems();
+		List<RecipeObject> returnList = new ArrayList<RecipeObject>();
 		//Pull all recipes from the specific recipe type
 		for (RecipeObject r : recipes.get(ro.getType())) {
 			//Ignore if shapless
@@ -90,7 +96,7 @@ public class RecipeDataBase {
 						}
 						counter++;
 						if (counter == 9) {
-							return r;
+							returnList.add(r);
 						}
 					}
 					
@@ -99,7 +105,10 @@ public class RecipeDataBase {
 				}
 			}
 		}
-		return null;
+		if(returnList.isEmpty() || returnList.size() > 1) {
+			return null;
+		}
+		return returnList.get(0);
 	}
 	
 	/**
@@ -112,6 +121,7 @@ public class RecipeDataBase {
 	 */
 
 	public static RecipeObject getMatchingShapelessRecipe(RecipeObject ro) {
+		List<RecipeObject> returnList = new ArrayList<RecipeObject>();
 		//Pull all recipes from a specific recipe type
 		for (RecipeObject r : recipes.get(ro.getType())) {
 			//Ignore if not shapeless
@@ -147,10 +157,13 @@ public class RecipeDataBase {
 			boolean itemFound = false;
 			//Loop through all the items in the first list.
 			//Inside that loop, loop through the second list.
-			//See if any items match. If not, break.
+			//See if any items match. If not, move on.
 			//If items do match, factor in amounts.
-			//If the amount is greater, subtract the amounts
-			//If less
+			//If the amount is greater, subtract the amounts and set the item as found. Move on.
+			//If equal, remove it from the list, set the item as found, and move on.
+			//If less, we still need to search so we remove the item from the list, but keep going.
+			//    Additionlly, we set the amount on the first item so we arn't looking for more than 
+			//    we've already found.
 			for (ItemStack i : itemsR) {
 				itemFound = false;
 				for (ItemStack ii : itemsRO) {
@@ -173,12 +186,18 @@ public class RecipeDataBase {
 					break;
 				}
 			}
+			//If the final item is not found, we move onto the next recipeobject in the recipe database
 			if (!itemFound) {
 				continue;
 			}
-			return r;
+			//Return the recipe if it fits
+			returnList.add(r);
 		}
-		return null;
+		if(returnList.isEmpty() || returnList.size() > 1) {
+			return null;
+		} else {
+			return returnList.get(0);
+		}
 	}
 
 }

@@ -3,7 +3,7 @@ package me.PsionicTemplar.templarIndustries.Recipes.TemplarIndustriesRecipes;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import me.PsionicTemplar.templarIndustries.Recipes.RecipeDataBase;
+import me.PsionicTemplar.templarIndustries.Start;
 import me.PsionicTemplar.templarIndustries.Recipes.RecipeObject;
 import me.PsionicTemplar.templarIndustries.Recipes.RecipeType;
 
@@ -26,7 +26,7 @@ public class TestRecipes {
 		ItemStack result = new ItemStack(Material.NOTE_BLOCK);
 		ItemStack[] items = {a, b, c, d, null, f, g, h, i};
 		RecipeObject ro = new RecipeObject(RecipeType.INDUSTRIAL_WORKBENCH, items, result, false);
-		RecipeDataBase.loadRecipe(ro);
+		Start.getStart().addRecipe(ro);
 	}
 	
 	private static void sampleShapless(){
@@ -42,6 +42,6 @@ public class TestRecipes {
 		ItemStack result = new ItemStack(Material.GOLD_INGOT);
 		ItemStack[] items = {a, b, c, d, null, f, g, h, i};
 		RecipeObject ro = new RecipeObject(RecipeType.INDUSTRIAL_WORKBENCH, items, result, true);
-		RecipeDataBase.loadRecipe(ro);
+		Start.getStart().addRecipe(ro);
 	}
 }

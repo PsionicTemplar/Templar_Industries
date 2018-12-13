@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,6 +16,8 @@ import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Indust
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Electrical.TestElectric;
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Generator.TemplarCoalGenerator;
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Wire.CopperWire;
+import me.PsionicTemplar.templarIndustries.Recipes.RecipeDataBase;
+import me.PsionicTemplar.templarIndustries.Recipes.RecipeObject;
 import me.PsionicTemplar.templarIndustries.Recipes.TemplarIndustriesRecipes.TestRecipes;
 
 public class Start extends JavaPlugin {
@@ -24,7 +27,7 @@ public class Start extends JavaPlugin {
 	private static HashMap<String, TemplarBlock> blocks;
 
 	/**
-	 * Return Static instance of class
+	 * Return Static instance of plugin
 	 * 
 	 * @author Nicholas Braniff
 	 * @return
@@ -32,6 +35,17 @@ public class Start extends JavaPlugin {
 	
 	public static Plugin getPlugin() {
 		JavaPlugin plugin = Start.plugin;
+		return plugin;
+	}
+	
+	/**
+	 * Return Static instance of class
+	 * 
+	 * @author Nicholas Braniff
+	 * @return
+	 */
+	
+	public static Start getStart() {
 		return plugin;
 	}
 	
@@ -59,7 +73,7 @@ public class Start extends JavaPlugin {
 			loadEvents();
 
 			//Load recipes
-			TestRecipes.load();
+			loadRecipes();
 		} catch (Exception ex) {
 			//Crash Handler 
 			System.out.println("[Templar Industries] There was an error with the startup. Please report this:");
@@ -81,6 +95,36 @@ public class Start extends JavaPlugin {
 	private void loadEvents() {
 		for (String t : blocks.keySet()) {
 			getServer().getPluginManager().registerEvents((Listener) blocks.get(t), this);
+		}
+	}
+	
+	/**
+	 * Base Recipe Loader
+	 * 
+	 * @author Nicholas Braniff
+	 */
+	
+	private void loadRecipes() {
+		TestRecipes.load();
+	}
+	
+	/**
+	 * Recipe Loader for other recipes. Fails if there is a duplicate recipe.
+	 * 
+	 * @author Nicholas Braniff
+	 * @param ro
+	 */
+	
+	public void addRecipe(RecipeObject ro) {
+		if(!RecipeDataBase.loadRecipe(ro)) {
+			System.out.println("[Templar Industries] This recipe overlaps another existing recipe.");
+			int counter = 1;
+			for(ItemStack i : ro.getItems()) {
+				System.out.println("[Templar Industries] Slot " + counter + ": " + i.getType().name());
+				counter++;
+			}
+			System.out.println("[Templar Industries] Result: " + ro.getResult().getType().name());
+			this.setEnabled(false);
 		}
 	}
 	
