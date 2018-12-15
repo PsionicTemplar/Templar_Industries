@@ -55,8 +55,8 @@ public abstract class TemplarGenerator extends TemplarBlock implements Listener{
 		TemplarGenerator t = null;
 		if (isWire) {
 			w = (Wire) node.getBlockType();
-			ex.getPlayer().sendMessage("Input: " + w.getInput(ex.getClickedBlock().getLocation()));
-			ex.getPlayer().sendMessage("Output: " + w.getOutput(ex.getClickedBlock().getLocation()));
+//			ex.getPlayer().sendMessage("Input: " + w.getInput(ex.getClickedBlock().getLocation()));
+//			ex.getPlayer().sendMessage("Output: " + w.getOutput(ex.getClickedBlock().getLocation()));
 		}
 		if (isElectrical) {
 			e = (ElectricalBlock) node.getBlockType();
@@ -153,7 +153,7 @@ public abstract class TemplarGenerator extends TemplarBlock implements Listener{
 		ElectricalBlock e = null;
 		if (isWire) {
 			w = (Wire) node.getBlockType();
-			w.setInput(node.getData(), 0.0);
+//			w.setInput(node.getData(), 0.0);
 		}
 		if (isElectrical) {
 			e = (ElectricalBlock) node.getBlockType();
@@ -174,35 +174,35 @@ public abstract class TemplarGenerator extends TemplarBlock implements Listener{
 		TemplarGenerator t = null;
 		int children = node.getChildren().size();
 		double output = 0.0;
-		if (isWire) {
-			w = (Wire) node.getBlockType();
-			if (w.getOutput(node.getData()) == 0) {
-				if (combined) {
-					w.setInput(node.getData(), newInput);
-				} else {
-					w.setInput(node.getData(), w.getInput(node.getData()) + newInput);
-				}
-				w.setOutput(node.getData());
-				return;
-			} else {
-				if (w.getInput(node.getData()) != 0) {
-					if (combined) {
-						w.setInput(node.getData(), newInput);
-					} else {
-						w.setInput(node.getData(), w.getInput(node.getData()) + newInput);
-					}
-					combined = true;
-				} else {
-					if (combined) {
-						w.setInput(node.getData(), newInput);
-					} else {
-						w.setInput(node.getData(), w.getInput(node.getData()) + newInput);
-					}
-				}
-				w.setOutput(node.getData());
-				output = w.getOutput(node.getData());
-			}
-		}
+//		if (isWire) {
+//			w = (Wire) node.getBlockType();
+//			if (w.getOutput(node.getData()) == 0) {
+//				if (combined) {
+//					w.setInput(node.getData(), newInput);
+//				} else {
+//					w.setInput(node.getData(), w.getInput(node.getData()) + newInput);
+//				}
+//				w.setOutput(node.getData());
+//				return;
+//			} else {
+//				if (w.getInput(node.getData()) != 0) {
+//					if (combined) {
+//						w.setInput(node.getData(), newInput);
+//					} else {
+//						w.setInput(node.getData(), w.getInput(node.getData()) + newInput);
+//					}
+//					combined = true;
+//				} else {
+//					if (combined) {
+//						w.setInput(node.getData(), newInput);
+//					} else {
+//						w.setInput(node.getData(), w.getInput(node.getData()) + newInput);
+//					}
+//				}
+//				w.setOutput(node.getData());
+//				output = w.getOutput(node.getData());
+//			}
+//		}
 		if (isElectrical) {
 			e = (ElectricalBlock) node.getBlockType();
 			if (combined && e.getRecieved(node.getData()).contains(node.getParent().getData())) {
