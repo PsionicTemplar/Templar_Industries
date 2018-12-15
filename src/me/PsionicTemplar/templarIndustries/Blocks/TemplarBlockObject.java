@@ -48,7 +48,7 @@ public class TemplarBlockObject {
 	 * Return's the Id of the block.
 	 * 
 	 * @author Nicholas Braniff
-	 * @return
+	 * @return Block ID
 	 */
 
 	public int getId(){
@@ -59,7 +59,7 @@ public class TemplarBlockObject {
 	 * Return's the owner's UUID of the block.
 	 * 
 	 * @author Nicholas Braniff
-	 * @return
+	 * @return Player UUID of the block owner
 	 */
 	
 	public UUID getOwner() {
@@ -71,7 +71,7 @@ public class TemplarBlockObject {
 	 * 
 	 * @author Nicholas Braniff
 	 * @param owner
-	 * @return
+	 * @return Current TemplarBlock
 	 */
 
 	public TemplarBlockObject setOwner(UUID owner) {
@@ -86,7 +86,7 @@ public class TemplarBlockObject {
 	 * Return the location of the block.
 	 * 
 	 * @author Nicholas Braniff
-	 * @return
+	 * @return Location of the block
 	 */
 
 	public Location getLocation() {
@@ -97,7 +97,7 @@ public class TemplarBlockObject {
 	 * Return the list of trusted UUID to the block.
 	 * 
 	 * @author Nicholas Braniff
-	 * @return
+	 * @return List of trusted player UUID's
 	 */
 
 	public List<UUID> getTrusted() {
@@ -109,7 +109,7 @@ public class TemplarBlockObject {
 	 * 
 	 * @author Nicholas Braniff
 	 * @param uuid
-	 * @return
+	 * @return Current TemplarBlockObject
 	 */
 	
 	public TemplarBlockObject addTrusted(UUID uuid){
@@ -125,7 +125,7 @@ public class TemplarBlockObject {
 	 * 
 	 * @author Nicholas Braniff
 	 * @param uuid
-	 * @return
+	 * @return Current TemplarBlockObject
 	 */
 	
 	public TemplarBlockObject removeTrusted(UUID uuid){
@@ -140,7 +140,7 @@ public class TemplarBlockObject {
 	 * Remove all from the trusted list so only the owner can access it.
 	 * 
 	 * @author Nicholas Braniff
-	 * @return
+	 * @return Current TemplarBlockObject
 	 */
 	
 	public TemplarBlockObject resetTrusted(){
@@ -155,7 +155,7 @@ public class TemplarBlockObject {
 	 * Get the current items in the block.
 	 * 
 	 * @author Nicholas Braniff
-	 * @return
+	 * @return Hashmap containing the items in the inventory.
 	 */
 	
 	public HashMap<Integer, ItemStack> getItemMap(){
@@ -167,7 +167,7 @@ public class TemplarBlockObject {
 	 * 
 	 * @author Nicholas Braniff
 	 * @param items
-	 * @return
+	 * @return Current TemplarBlockObject
 	 */
 	
 	public TemplarBlockObject setItemMap(HashMap<Integer, ItemStack> items){

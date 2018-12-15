@@ -167,7 +167,7 @@ public abstract class TemplarBlock implements Listener {
 	@EventHandler
 	public void addBlock(BlockPlaceEvent e) {
 		//See if the item is the correct item or not
-		if (!e.getItemInHand().equals(ItemStackCopy.getItemStackCopy(getBlockItemClone(), e.getItemInHand().getAmount()))) {
+		if (!e.getItemInHand().equals(ItemStackCopy.getItemStackCopy(getItemStack(), e.getItemInHand().getAmount()))) {
 			return;
 		}
 		FileConfiguration config = co.getConfig();
@@ -251,7 +251,7 @@ public abstract class TemplarBlock implements Listener {
 			@Override
 			public void run() {
 				Location loc = new Location(l.getWorld(), l.getBlockX() + 0.5, l.getBlockY(), l.getBlockZ() + 0.5);
-				loc.getWorld().dropItemNaturally(loc, getBlockItemClone());
+				loc.getWorld().dropItemNaturally(loc, getItemStack());
 				for (int i : loadedBlocks.get(tempId).getItemMap().keySet()) {
 					loc.getWorld().dropItemNaturally(loc, loadedBlocks.get(tempId).getItemMap().get(i));
 				}
@@ -277,23 +277,9 @@ public abstract class TemplarBlock implements Listener {
 	 * Abstract method for extended classes to define the item they'd like the block to be.
 	 * 
 	 * @author Nicholas Braniff
-	 * @return
 	 */
 
 	public abstract ItemStack getItemStack();
-
-	/**
-	 * Get a clone of the block item that's able to be edited.
-	 * 
-	 * @author Nicholas Braniff
-	 * @return
-	 */
-	
-	public ItemStack getBlockItemClone() {
-		ItemStack copyThis = getItemStack();
-		ItemStack i = ItemStackCopy.getItemStackCopy(copyThis);
-		return i;
-	}
 	
 	/**
 	 * Right click event used to trigger the opening of the block's gui
@@ -416,7 +402,7 @@ public abstract class TemplarBlock implements Listener {
 	 * Return if the block is a wire
 	 * 
 	 * @author Nicholas Braniff
-	 * @return
+	 * @return Boolean of whether it is a wire or not
 	 */
 
 	public boolean isWire() {
@@ -427,7 +413,7 @@ public abstract class TemplarBlock implements Listener {
 	 * Return if the block is a generator
 	 * 
 	 * @author Nicholas Braniff
-	 * @return
+	 * @return Boolean of whether is is a generator or not
 	 */
 
 	public boolean isGenerator() {
@@ -438,7 +424,7 @@ public abstract class TemplarBlock implements Listener {
 	 * Return if the block is electrical
 	 * 
 	 * @author Nicholas Braniff
-	 * @return
+	 * @return Boolean of whether it is electrical or not
 	 */
 	
 	public boolean isElectrical(){
@@ -449,7 +435,7 @@ public abstract class TemplarBlock implements Listener {
 	 * Return the hashmap of locations
 	 * 
 	 * @author Nicholas Braniff
-	 * @return
+	 * @return Hashmap containing all the block locations.
 	 */
 
 	public HashMap<Location, Integer> getLocations() {

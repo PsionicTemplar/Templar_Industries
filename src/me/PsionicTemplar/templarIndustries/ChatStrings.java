@@ -8,7 +8,7 @@ public class ChatStrings {
 	 * Returns the error header for a message
 	 * 
 	 * @author Nicholas Braniff
-	 * @return
+	 * @return Error Header String.
 	 */
 
 	public static String getError(){

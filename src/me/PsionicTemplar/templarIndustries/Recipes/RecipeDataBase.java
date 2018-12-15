@@ -17,7 +17,7 @@ public class RecipeDataBase {
 	 * 
 	 * @author Nicholas Braniff
 	 * @param ro
-	 * @return
+	 * @return Boolean stating whether the recipe was loaded or not.
 	 */
 
 	public static boolean loadRecipe(RecipeObject ro) {
@@ -42,20 +42,22 @@ public class RecipeDataBase {
 	 * 
 	 * @author Nicholas Braniff
 	 * @param result
-	 * @return
+	 * @return RecipeObject. If null, no recipe was found or more than one recipe was found.
 	 */
 
-	
-	//TODO This might need to return a list? 
 	public static RecipeObject getRecipeObjectFromResult(ItemStack result) {
+		List<RecipeObject> returnList = new ArrayList<RecipeObject>();
 		for (RecipeType rt : recipes.keySet()) {
 			for (RecipeObject ro : recipes.get(rt)) {
 				if (ro.getResult().equals(ItemStackCopy.getItemStackCopy(result, ro.getResult().getAmount()))) {
-					return ro;
+					returnList.add(ro);
 				}
 			}
 		}
-		return null;
+		if(returnList.isEmpty() || returnList.size() > 1) {
+			return null;
+		}
+		return returnList.get(0);
 	}
 	
 	/**
@@ -64,7 +66,7 @@ public class RecipeDataBase {
 	 * 
 	 * @author Nicholas Braniff
 	 * @param ro
-	 * @return
+	 * @return RecipeObject. If null, no recipe was found or more than one recipe was found.
 	 */
 
 	public static RecipeObject getMatchingShapedRecipe(RecipeObject ro) {
@@ -121,7 +123,7 @@ public class RecipeDataBase {
 	 * 
 	 * @author Nicholas Braniff
 	 * @param ro
-	 * @return
+	 * @return RecipeObject. If null, no recipe was found or more than one recipe was found.
 	 */
 
 	public static RecipeObject getMatchingShapelessRecipe(RecipeObject ro) {

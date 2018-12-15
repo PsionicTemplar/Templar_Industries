@@ -15,7 +15,7 @@ public class ItemStackCopy {
 	 * 
 	 * @author Nicholas Braniff
 	 * @param copyThis
-	 * @return
+	 * @return Editable copy of an ItemStack
 	 */
 
 	public static ItemStack getItemStackCopy(ItemStack copyThis) {
@@ -35,7 +35,7 @@ public class ItemStackCopy {
 	 * @author Nicholas Braniff
 	 * @param copyThis
 	 * @param amount
-	 * @return
+	 * @return Editable copy of an ItemStack
 	 */
 
 	public static ItemStack getItemStackCopy(ItemStack copyThis, int amount) {
@@ -58,7 +58,7 @@ public class ItemStackCopy {
 	 * @param amount
 	 * @param name
 	 * @param lore
-	 * @return
+	 * @return Editable copy of an ItemStack
 	 */
 
 	public static ItemStack getItemStackCopy(ItemStack copyThis, int amount, String name, List<String> lore) {
@@ -87,7 +87,7 @@ public class ItemStackCopy {
 	 * @param amount
 	 * @param damage
 	 * @param enchants
-	 * @return
+	 * @return Editable copy of an ItemStack
 	 */
 
 	public static ItemStack getItemStackCopy(ItemStack copyThis, int amount, short damage,
@@ -117,7 +117,7 @@ public class ItemStackCopy {
 	 * @param enchants
 	 * @param name
 	 * @param lore
-	 * @return
+	 * @return Editable copy of an ItemStack
 	 */
 
 	public static ItemStack getItemStackCopy(ItemStack copyThis, int amount, short damage,

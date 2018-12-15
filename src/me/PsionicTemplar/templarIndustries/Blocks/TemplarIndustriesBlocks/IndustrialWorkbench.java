@@ -32,10 +32,17 @@ public class IndustrialWorkbench extends TemplarBlock {
 	private int craftButton = 23;
 	private int output = 25;
 
+	/**
+	 * Constructor for Industrial Workbench. 
+	 * 
+	 * @author Nicholas Braniff
+	 * @param name
+	 */
+	
 	public IndustrialWorkbench(String name) {
 		super(name, 54);
 	}
-
+	
 	@Override
 	public ItemStack getItemStack() {
 		ItemStack i = new ItemStack(Material.CRAFTING_TABLE);
@@ -51,26 +58,34 @@ public class IndustrialWorkbench extends TemplarBlock {
 		HashMap<Integer, ItemStack> items = new HashMap<Integer, ItemStack>();
 		Inventory i = e.getInventory();
 		for (int temp = 0; temp < this.inventorySize; temp++) {
+			//Continue if the spot isn't one of the spots needed to be saved.
 			if (!storage.contains(temp) && !workbench.contains(temp) && temp != output) {
 				continue;
 			}
+			//Continue if the spot doesn't contain an item.
 			if (i.getItem(temp) == null) {
 				continue;
 			}
+			//Continue if the spot doesn't contain an item.
 			if (i.getItem(temp).getType() == Material.AIR) {
 				continue;
 			}
+			//Put the item in the Hashmap
 			items.put(temp, i.getItem(temp));
 		}
+		//Set the item map for the inventory/player so it can be saved. See called method for more info.
 		this.loadedBlocks.get(this.locations.get(this.inGui.get(p.getUniqueId()))).setItemMap(items);
 	}
 
 	@Override
 	protected void openGui(Location l, Player p) {
+		//Create the inventory instance
 		Inventory inv = Bukkit.createInventory(null, this.inventorySize, this.name);
+		//Set the saved items in the Item Map into the inventory.
 		for (int slot : this.loadedBlocks.get(this.locations.get(l)).getItemMap().keySet()) {
 			inv.setItem(slot, this.loadedBlocks.get(this.locations.get(l)).getItemMap().get(slot));
 		}
+		//Set items for all the ambient items
 		ItemStack none = new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1);
 		ItemMeta im = none.getItemMeta();
 		im.setDisplayName("");
@@ -80,13 +95,16 @@ public class IndustrialWorkbench extends TemplarBlock {
 		im.setDisplayName(ChatColor.GREEN + "Click Me to Craft");
 		im.setLore(Arrays.asList(ChatColor.DARK_GREEN + "Shift Left Click to Craft a Stack"));
 		craft.setItemMeta(im);
+		//Set all the blank spots to the blank item
 		for (int i = 0; i < this.inventorySize; i++) {
 			if (storage.contains(i) || workbench.contains(i) || i == output || i == craftButton) {
 				continue;
 			}
 			inv.setItem(i, none);
 		}
+		//Set the crafting button
 		inv.setItem(craftButton, craft);
+		//Open the inventory
 		p.openInventory(inv);
 	}
 

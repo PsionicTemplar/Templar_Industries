@@ -30,7 +30,7 @@ public class RecipeObject {
 	 * Get the type of recipe.
 	 * 
 	 * @author Nicholas Braniff
-	 * @return
+	 * @return RecipeType
 	 */
 
 	public RecipeType getType() {
@@ -39,9 +39,13 @@ public class RecipeObject {
 
 	/**
 	 * Return's the items used in the recipe.
+	 * Left to Right.
+	 * 0 = Top Left
+	 * 3 = Middle Left
+	 * 6 = Bottom Left
 	 * 
 	 * @author Nicholas Braniff
-	 * @return
+	 * @return Array (size 9) containing all the recipe slots.
 	 */
 	
 	public ItemStack[] getItems() {
@@ -53,7 +57,7 @@ public class RecipeObject {
 	 * 
 	 * @author Nicholas Braniff
 	 * @param items
-	 * @return
+	 * @return Current RecipeObject
 	 */
 	
 	public RecipeObject setItems(ItemStack[] items){
@@ -65,7 +69,7 @@ public class RecipeObject {
 	 * Returns the result of the recipe.
 	 * 
 	 * @author Nicholas Braniff
-	 * @return
+	 * @return The result ItemStack
 	 */
 
 	public ItemStack getResult() {
@@ -77,7 +81,7 @@ public class RecipeObject {
 	 * 
 	 * @author Nicholas Braniff
 	 * @param result
-	 * @return
+	 * @return Current RecipeObject
 	 */
 	
 	public RecipeObject setResult(ItemStack result){
@@ -91,7 +95,7 @@ public class RecipeObject {
 	 * 
 	 * @author Nicholas Braniff
 	 * @param slot
-	 * @return
+	 * @return ItemStack in a specified slot.
 	 */
 	
 	public ItemStack getSlot(int slot){
@@ -99,10 +103,10 @@ public class RecipeObject {
 	}
 	
 	/**
-	 * Returns if recipe is a shapless recipe
+	 * Returns if recipe is a shapeless recipe
 	 * 
 	 * @author Nicholas Braniff
-	 * @return
+	 * @return Boolean stating if recipe is shapeless.
 	 */
 	
 	public boolean isShapeless(){
@@ -114,7 +118,7 @@ public class RecipeObject {
 	 * 
 	 * @author Nicholas Braniff
 	 * @param shapeless
-	 * @return
+	 * @return Current RecipeObject
 	 */
 	
 	public RecipeObject setShapeless(boolean shapeless){

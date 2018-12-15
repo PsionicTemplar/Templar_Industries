@@ -100,7 +100,7 @@ public class ConfigObject {
 	/**
 	 * Returns FileConfguration Object
 	 * 
-	 * @return
+	 * @return FileConfiguration for the given config.
 	 * @author Nicholas Braniff
 	 */
 	
@@ -123,7 +123,7 @@ public class ConfigObject {
 	/**
 	 * Returns whether or not it is the main plugin FileConfiguration or not.
 	 * 
-	 * @return
+	 * @return Boolean stating if it is the main plugin config or not
 	 * @author Nicholas Braniff
 	 */
 
@@ -133,7 +133,7 @@ public class ConfigObject {
 	
 	/**
 	 * Returns the file path.
-	 * @return
+	 * @return String containing the file path
 	 * @author Nicholas Braniff
 	 */
 
@@ -143,7 +143,7 @@ public class ConfigObject {
 	
 	/**
 	 * Returns the file name.
-	 * @return
+	 * @return String containing the file name.
 	 * @author Nicholas Braniff
 	 */
 

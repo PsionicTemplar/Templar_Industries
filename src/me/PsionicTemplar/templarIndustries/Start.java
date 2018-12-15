@@ -30,7 +30,7 @@ public class Start extends JavaPlugin {
 	 * Return Static instance of plugin
 	 * 
 	 * @author Nicholas Braniff
-	 * @return
+	 * @return Plugin object for the plugin.
 	 */
 	
 	public static Plugin getPlugin() {
@@ -42,7 +42,7 @@ public class Start extends JavaPlugin {
 	 * Return Static instance of class
 	 * 
 	 * @author Nicholas Braniff
-	 * @return
+	 * @return Start class instance
 	 */
 	
 	public static Start getStart() {
@@ -161,10 +161,9 @@ public class Start extends JavaPlugin {
 	 * 
 	 * @author Nicholas Braniff
 	 * @param name
-	 * @return
+	 * @return TemplarBlock for the name given. Returns null if no block is found.
 	 */
 
-	//TODO Make enum?
 	public static TemplarBlock getBlock(String name) {
 		name = name.toUpperCase().replaceAll(" ", "_");
 		try {
@@ -178,7 +177,7 @@ public class Start extends JavaPlugin {
 	 * Return all loaded blocks
 	 * 
 	 * @author Nicholas Braniff
-	 * @return
+	 * @return Returns all registered TemplarBlocks
 	 */
 	
 	public static Collection<TemplarBlock> getBlocks(){
