@@ -64,10 +64,10 @@ public class Start extends JavaPlugin {
 			this.getCommand("test").setExecutor(new CommandExtender());
 
 			//Load premade blocks into memory
-			blocks.put("Industrial Workbench", new IndustrialWorkbench("Industrial Workbench"));
-			blocks.put("Copper Wire", new CopperWire("Copper Wire"));
-			blocks.put("Templar Coal Generator", new TemplarCoalGenerator("Templar Coal Generator"));
-			blocks.put("Test", new TestElectric("Test"));
+			blocks.put("Industrial Workbench".toUpperCase().replaceAll(" ", "_"), new IndustrialWorkbench("Industrial Workbench"));
+			blocks.put("Copper Wire".toUpperCase().replaceAll(" ", "_"), new CopperWire("Copper Wire"));
+			blocks.put("Templar Coal Generator".toUpperCase().replaceAll(" ", "_"), new TemplarCoalGenerator("Templar Coal Generator"));
+			blocks.put("Test".toUpperCase().replaceAll(" ", "_"), new TestElectric("Test"));
 			
 			//Load events
 			loadEvents();
@@ -154,7 +154,10 @@ public class Start extends JavaPlugin {
 	}
 	
 	/**
-	 * Return the block instance of the name you give it
+	 * Return the block instance of the name you give it. Each word should have a space.
+	 * For Example: Copper Wire
+	 * Don't put: CopperWire
+	 * Acceptable: Copper_Wire or COPPER_WIRE
 	 * 
 	 * @author Nicholas Braniff
 	 * @param name
@@ -163,6 +166,7 @@ public class Start extends JavaPlugin {
 
 	//TODO Make enum?
 	public static TemplarBlock getBlock(String name) {
+		name = name.toUpperCase().replaceAll(" ", "_");
 		try {
 			return blocks.get(name);
 		} catch (Exception ex) {
