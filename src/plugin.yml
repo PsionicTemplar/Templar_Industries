@@ -2,6 +2,7 @@ name: Templar_Industries
 main: me.PsionicTemplar.templarIndustries.Start
 version: 0.1
 author: PsionicTemplar
+api-version: 1.13
 description: Industrialized Vanilla Mincraft!
 commands:
   test:

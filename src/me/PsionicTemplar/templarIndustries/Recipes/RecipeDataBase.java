@@ -70,6 +70,10 @@ public class RecipeDataBase {
 	public static RecipeObject getMatchingShapedRecipe(RecipeObject ro) {
 		ItemStack[] items = ro.getItems();
 		List<RecipeObject> returnList = new ArrayList<RecipeObject>();
+		//Check to see if the recipe arraylist is null
+		if(recipes.get(ro.getType()) == null) {
+			return null;
+		}
 		//Pull all recipes from the specific recipe type
 		for (RecipeObject r : recipes.get(ro.getType())) {
 			//Ignore if shapless
@@ -122,6 +126,10 @@ public class RecipeDataBase {
 
 	public static RecipeObject getMatchingShapelessRecipe(RecipeObject ro) {
 		List<RecipeObject> returnList = new ArrayList<RecipeObject>();
+		//Check to see if the recipe arraylist is null
+		if(recipes.get(ro.getType()) == null) {
+			return null;
+		}
 		//Pull all recipes from a specific recipe type
 		for (RecipeObject r : recipes.get(ro.getType())) {
 			//Ignore if not shapeless
