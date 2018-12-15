@@ -195,9 +195,6 @@ public class RecipeDataBase {
 				}
 			}
 			//If the final item is not found, we move onto the next recipeobject in the recipe database
-			if (!itemFound) {
-				continue;
-			}
 			//Return the recipe if it fits
 			returnList.add(r);
 		}

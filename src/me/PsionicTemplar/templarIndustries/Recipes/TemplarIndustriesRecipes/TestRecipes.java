@@ -19,7 +19,7 @@ public class TestRecipes {
 		ItemStack c = new ItemStack(Material.DIRT);
 		ItemStack d = new ItemStack(Material.ARROW);
 //		ItemStack e = new ItemStack(Material.PUMPKIN_PIE);
-		ItemStack f = new ItemStack(Material.GRASS);
+		ItemStack f = new ItemStack(Material.GRASS_BLOCK);
 		ItemStack g = new ItemStack(Material.DIAMOND_ORE);
 		ItemStack h = new ItemStack(Material.DIAMOND);
 		ItemStack i = new ItemStack(Material.APPLE);
@@ -35,7 +35,7 @@ public class TestRecipes {
 		ItemStack c = new ItemStack(Material.DIRT);
 		ItemStack d = new ItemStack(Material.ARROW);
 //		ItemStack e = new ItemStack(Material.PUMPKIN_PIE);
-		ItemStack f = new ItemStack(Material.GRASS);
+		ItemStack f = new ItemStack(Material.GRASS_BLOCK);
 		ItemStack g = new ItemStack(Material.DIAMOND_ORE);
 		ItemStack h = new ItemStack(Material.DIAMOND);
 		ItemStack i = new ItemStack(Material.IRON_INGOT);
