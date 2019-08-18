@@ -1,15 +1,9 @@
 package me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Wire;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.Location;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-import me.PsionicTemplar.templarIndustries.Start;
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarBlock;
-import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Generator.TemplarGenerator;
 
 public abstract class Wire extends TemplarBlock {
 
@@ -25,65 +19,9 @@ public abstract class Wire extends TemplarBlock {
 		this.isWire = true;
 	}
 
-	protected Location getGeneratorLocation(List<Location> complete, Location l, List<Location> generators) {
-		Location newL = null;
-		List<Location> possible = new ArrayList<Location>();
-		possible.add(new Location(l.getWorld(), l.getX() + 1, l.getY(), l.getZ()));
-		possible.add(new Location(l.getWorld(), l.getX() - 1, l.getY(), l.getZ()));
-		possible.add(new Location(l.getWorld(), l.getX(), l.getY() + 1, l.getZ()));
-		possible.add(new Location(l.getWorld(), l.getX(), l.getY() - 1, l.getZ()));
-		possible.add(new Location(l.getWorld(), l.getX(), l.getY(), l.getZ() + 1));
-		possible.add(new Location(l.getWorld(), l.getX(), l.getY(), l.getZ() - 1));
-
-		for (Location ll : possible) {
-			for (TemplarBlock tb : Start.getBlocks()) {
-				if (!tb.getLocations().containsKey(ll)) {
-					continue;
-				}
-				if (tb.isGenerator()) {
-					if(!generators.contains(ll)) {
-						generators.add(ll);
-					}
-					break;
-				} else if (tb.isWire()) {
-					if (complete.contains(ll)) {
-						continue;
-					}
-					complete.add(l);
-					newL = getGeneratorLocation(complete, ll, generators);
-					complete.remove(l);
-					if (newL != null) {
-						break;
-					}
-				}
-			}
-		}
-		complete.add(l);
-		return newL;
-	}
-
 	@Override
 	public void onBlockPlace(BlockPlaceEvent e) {
-		Location l = e.getBlock().getLocation();
-		List<Location> complete = new ArrayList<Location>();
-		List<Location> generators = new ArrayList<Location>();
 
-		getGeneratorLocation(complete, l, generators);
-		TemplarGenerator tcg = null;
-		if (generators.isEmpty()) {
-			return;
-		} else {
-			for (TemplarBlock tb : Start.getBlocks()) {
-				for(Location genloc : generators) {
-					if (!tb.getLocations().containsKey(genloc)) {
-						continue;
-					}
-					tcg = (TemplarGenerator) tb;
-					tcg.createTree(genloc);
-				}
-			}
-			
-		}
 	}
 
 	@Override
