@@ -511,4 +511,10 @@ public class IndustrialWorkbench extends TemplarBlock {
 	@Override
 	public void onBlockBreak(BlockBreakEvent e) {}
 
+	@Override
+	public void onInit() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

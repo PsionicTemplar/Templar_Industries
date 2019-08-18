@@ -44,5 +44,11 @@ public class CopperWire extends Wire{
 
 	@Override
 	public void saveInventory(InventoryCloseEvent e, Player p) {}
+
+	@Override
+	public void onInit() {
+		// TODO Auto-generated method stub
+		
+	}
 }
 

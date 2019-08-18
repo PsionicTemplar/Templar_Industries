@@ -57,4 +57,10 @@ public class TestElectric extends ElectricalBlock{
 		
 	}
 
+	@Override
+	public void onInit() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

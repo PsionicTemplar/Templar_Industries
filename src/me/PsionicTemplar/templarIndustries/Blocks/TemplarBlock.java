@@ -111,7 +111,10 @@ public abstract class TemplarBlock implements Listener {
 			//Put the location in a hashmap with the id so a block can be called using a location by getting the id.
 			locations.put(l, i);
 		}
+		onInit();
 	}
+	
+	public abstract void onInit();
 	
 	/**
 	 * Easy to use method for the blocks to increase the latest id by one and then write that to the fileconfiguration
@@ -441,4 +444,5 @@ public abstract class TemplarBlock implements Listener {
 	public HashMap<Location, Integer> getLocations() {
 		return locations;
 	}
+	
 }
