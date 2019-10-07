@@ -23,6 +23,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import me.PsionicTemplar.templarIndustries.ConfigObject;
 import me.PsionicTemplar.templarIndustries.Start;
+import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Generator.TemplarGenerator;
 import me.PsionicTemplar.templarIndustries.Util.ItemStackCopy;
 
 public abstract class TemplarBlock implements Listener {
@@ -110,6 +111,11 @@ public abstract class TemplarBlock implements Listener {
 			loadedBlocks.put(i, new TemplarBlockObject(this, i, l, owner, finalTrusted, items));
 			//Put the location in a hashmap with the id so a block can be called using a location by getting the id.
 			locations.put(l, i);
+			if(this instanceof TemplarGenerator) {
+				TemplarGenerator tg = (TemplarGenerator) this;
+				tg.setPower(config.getLong(i + ".power"));
+				tg.setTicks(config.getLong(i + ".ticks"), this.loadedBlocks.get(i).getLocation(), tg);
+			}
 		}
 		onInit();
 	}
@@ -194,6 +200,11 @@ public abstract class TemplarBlock implements Listener {
 		config.set(tempId + ".owner", owner.toString());
 		config.set(tempId + ".trusted", new ArrayList<String>());
 		config.set(tempId + ".itemSlots", new ArrayList<Integer>());
+		
+		if(this instanceof TemplarGenerator) {
+			config.set(tempId + ".ticks", 0L);
+			config.set(tempId + ".power", 0L);
+		}
 
 		//Write the config to the harddrive and add the location and the block to the maps for later use.
 		co.setConfigWrite(config);

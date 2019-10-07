@@ -13,8 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarBlock;
 import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.IndustrialWorkbench;
-import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Electrical.TestElectric;
-import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Wire.CopperWire;
+import me.PsionicTemplar.templarIndustries.Blocks.TemplarIndustriesBlocks.Generator.CombustionGenerator;
 import me.PsionicTemplar.templarIndustries.Recipes.RecipeDataBase;
 import me.PsionicTemplar.templarIndustries.Recipes.RecipeObject;
 import me.PsionicTemplar.templarIndustries.Recipes.TemplarIndustriesRecipes.TestRecipes;
@@ -64,9 +63,10 @@ public class Start extends JavaPlugin {
 
 			//Load premade blocks into memory
 			blocks.put("Industrial Workbench".toUpperCase().replaceAll(" ", "_"), new IndustrialWorkbench("Industrial Workbench"));
-			blocks.put("Copper Wire".toUpperCase().replaceAll(" ", "_"), new CopperWire("Copper Wire"));
+			blocks.put("Combustion Generator".toUpperCase().replaceAll(" ", "_"), new CombustionGenerator("Combustion Generator", 45));
+			//blocks.put("Copper Wire".toUpperCase().replaceAll(" ", "_"), new CopperWire("Copper Wire"));
 			//blocks.put("Templar Coal Generator".toUpperCase().replaceAll(" ", "_"), new TemplarCoalGenerator("Templar Coal Generator"));
-			blocks.put("Test".toUpperCase().replaceAll(" ", "_"), new TestElectric("Test"));
+			//blocks.put("Test".toUpperCase().replaceAll(" ", "_"), new TestElectric("Test"));
 			
 			//Load events
 			loadEvents();

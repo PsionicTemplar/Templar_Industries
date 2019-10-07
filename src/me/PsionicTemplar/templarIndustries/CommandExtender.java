@@ -23,7 +23,7 @@ public class CommandExtender implements CommandExecutor {
 		switch(alias.toString()){
 		//Does what I want this command to do. Used in testing.
 		case "test":
-			p.getInventory().addItem(Start.getBlock("Industrial workbench").getItemStack());
+			p.getInventory().addItem(Start.getBlock("industrial workbench").getItemStack());
 			return true;
 		}
 		return false;
